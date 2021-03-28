@@ -1,0 +1,17 @@
+<p>você tem de <a href="{% url 'account_list' %}">saldo</a>: {{saldo}}</p> 
+
+---
+----
+<p>Suas receitas somam {{receitas}}</p>
+
+<p>Suas despesas somam {{despesas}}</p>
+<p>-----</p>
+
+<ul>
+<p>despesas por categorias</p>
+{% for key,value in despesa_por_categoria.items %}
+<li>categoria: {{key}} tem {{value}} de despesa</li>
+	
+{% endfor %}
+</ul>
+

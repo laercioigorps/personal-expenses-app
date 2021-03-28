@@ -1,0 +1,15 @@
+{%  if list_objects  %}
+
+	<ul>
+	{% for object in list_objects %}
+		<li><a href="{% url 'fino:cattegory_detail' object.id %}">{{object.name}} - {{object.description}}</a></li>
+
+	{%endfor%}
+	</ul>
+lista encontrada
+{%else%}
+Nenhuma conta, para criar voce pode ir em <a href="{% url 'fino:account_create' %}">criar conta</a>
+
+{% endif %}
+
+

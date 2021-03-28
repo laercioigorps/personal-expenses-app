@@ -1,0 +1,18 @@
+<ul>
+ 
+<label>transaction name:</label>
+<li>{{object.name}}</li>
+
+<label>transaction description:</label>
+<li></li>{{object.description}}
+
+<label>transaction total:</label>
+<li>{{object.total}}</li>
+
+ 
+</ul>
+
+/n
+<a href="{% url 'transaction_edit' object.id %}">editar transaction</a>
+
+<a href="{% url 'transaction_delete' object.id %}">deletar transaction</a>

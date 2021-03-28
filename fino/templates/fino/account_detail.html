@@ -1,0 +1,18 @@
+<ul>
+ 
+<label>account name:</label>
+<li>{{object.name}}</li>
+
+<label>account description:</label>
+<li></li>{{object.description}}
+
+<label>account total:</label>
+<li>{{object.total}}</li>
+
+ 
+</ul>
+
+/n
+<a href="{% url 'account_edit' object.id %}">editar account</a>
+
+<a href="{% url 'account_delete' object.id %}">deletar account</a>
