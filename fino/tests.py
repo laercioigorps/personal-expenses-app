@@ -1,11 +1,14 @@
-from django.test import TestCase, Client
-from django.contrib.auth.models import User
-from django.utils import timezone
 from datetime import date
+
+from django.contrib.auth.models import User
+from django.test import TestCase, Client
+from django.urls import reverse
+from django.utils import timezone
+
 
 from .models import Cattegory, Account, Transaction
 from .forms import AccountModelForm, Account_delete_form
-from django.urls import reverse
+
 import datetime
 
 # Create your tests here.
@@ -197,7 +200,7 @@ class Account_views_test_new_user(TestCase):
 	def test_Account_eddit_new_user_acessing_others_account_view(self):
 		self.client.login(username='root2',password='root2')
 		response = self.client.get(reverse('fino:account_edit',args=[self.account2.id]))
-		self.assertEqual(response.status_code,302)
+		self.assertEqual(response.status_code,403)
 
 
 	def test_Account_eddit_user_acessing_others_account_view(self):
@@ -208,7 +211,7 @@ class Account_views_test_new_user(TestCase):
 
 		create_account(response.wsgi_request.user,'teste','description',200)
 		response = self.client.get(reverse('fino:account_edit',args=[self.account2.id]))
-		self.assertEqual(response.status_code,302)
+		self.assertEqual(response.status_code,403)
 
 	def test_Account_eddit_user_acessing_own_account_view(self):
 
@@ -227,10 +230,10 @@ class Account_views_test_new_user(TestCase):
 		response = self.client.get(reverse('fino:account_delete',args=[self.account2.id]))
 		self.assertEqual(response.status_code, 302)
 
-	def test_delete_get_with_new_user(self):
+	def test_delete_other_user_account_get_with_new_user(self):
 		self.client.login(username='root2',password='root2')
 		response = self.client.get(reverse('fino:account_delete',args=[self.account2.id]))
-		self.assertEqual(response.status_code, 302)
+		self.assertEqual(response.status_code, 403)
 
 	def test_delete_get_with_new_user_invalid_account_id(self):
 		self.client.login(username='root2',password='root2')
@@ -238,7 +241,7 @@ class Account_views_test_new_user(TestCase):
 		self.assertEqual(response.status_code, 404)
 
 
-	def test_delete_get_post_with_new_user_invalid_account_id(self):
+	def test_delete_account_get_post_with_new_user(self):
 		self.client.login(username='root2',password='root2')
 		response = self.client.get(reverse('fino:account_list'))
 		account = create_account(response.wsgi_request.user,
@@ -396,7 +399,7 @@ class Cattegory_views_test_new_user(TestCase):
 		self.client.login(username='root2',password='root2')
 		response = self.client.get(reverse('fino:cattegory_edit',
 			args=[self.cattegory2.id]))
-		self.assertEqual(response.status_code,302)
+		self.assertEqual(response.status_code,403)
 
 
 	def test_Cattegory_eddit_user_acessing_others_cattegory_view(self):
@@ -408,7 +411,7 @@ class Cattegory_views_test_new_user(TestCase):
 		create_cattegory(response.wsgi_request.user,'teste','description',False)
 		response = self.client.get(reverse('fino:cattegory_edit',
 			args=[self.cattegory2.id]))
-		self.assertEqual(response.status_code,302)
+		self.assertEqual(response.status_code,403)
 
 	def test_Cattegory_eddit_user_acessing_own_cattegory_view(self):
 
@@ -434,7 +437,7 @@ class Cattegory_views_test_new_user(TestCase):
 		self.client.login(username='root2',password='root2')
 		response = self.client.get(reverse('fino:cattegory_delete',
 			args=[self.cattegory2.id]))
-		self.assertEqual(response.status_code, 302)
+		self.assertEqual(response.status_code, 403)
 
 	def test_delete_get_with_new_user_invalid_cattegory_id(self):
 		self.client.login(username='root2',password='root2')
@@ -442,7 +445,7 @@ class Cattegory_views_test_new_user(TestCase):
 		self.assertEqual(response.status_code, 404)
 
 
-	def test_delete_get_post_with_new_user_invalid_cattegory_id(self):
+	def test_delete_get_post_view(self):
 		self.client.login(username='root2',password='root2')
 		response = self.client.get(reverse('fino:cattegory_list'))
 		cattegory = create_cattegory(response.wsgi_request.user, 'name_test',
@@ -538,7 +541,7 @@ class Transaction_views_test(TestCase):
 		self.assertEqual(response.status_code, 200)
 
 
-	def test_view_create_transaction_post_anc_account_adding(self):
+	def test_view_create_transaction_post_account_adding(self):
 
 		is_logged = self.client.login(username='root',password= 'root')
 		self.assertEqual(is_logged, True)
@@ -707,81 +710,100 @@ class Transaction_views_test(TestCase):
 		self.assertEqual(response.context['list_objects'].count(),4)
 
 
-	# def test_Transaction_eddit_get_no_user_view(self):
+	def test_Transaction_eddit_get_no_user_view(self):
+		transaction1 = create_transaction(self.account1, self.cat_receita1,'description',100,True,date.today())
 
-	# 	response = self.client.get(reverse('fino:transaction_edit',args=[self.transaction1.id]))
-	# 	self.assertEqual(response.status_code,302)
+		response = self.client.get(reverse('fino:transaction_edit',args=[transaction1.id]))
+		self.assertEqual(response.status_code,302)
 
-	# def test_Transaction_eddit_new_user_acessing_others_transaction_view(self):
-	# 	self.client.login(username='root2',password='root2')
-	# 	response = self.client.get(reverse('fino:transaction_edit',args=[self.transaction2.id]))
-	# 	self.assertEqual(response.status_code,302)
+	def test_Transaction_eddit_new_user_acessing_others_transaction_view(self):
+	 	self.client.login(username='root',password='root')
 
-
-	# def test_Transaction_eddit_user_acessing_others_transaction_view(self):
-
-	# 	self.client.login(username='root2',password='root2')
-	# 	response = self.client.get(reverse('fino:transaction_list'))
-	# 	self.assertEqual(response.status_code, 200)
-
-	# 	create_transaction(response.wsgi_request.user,'teste','description',False)
-	# 	response = self.client.get(reverse('fino:transaction_edit',args=[self.transaction2.id]))
-	# 	self.assertEqual(response.status_code,302)
-
-	# def test_Transaction_eddit_user_acessing_own_transaction_view(self):
-
-	# 	self.client.login(username='root2',password='root2')
-	# 	response = self.client.get(reverse('fino:transaction_list'))
-	# 	self.assertEqual(response.status_code, 200)
-
-	# 	transaction = create_transaction(response.wsgi_request.user,'teste','description',True)
-	# 	response = self.client.get(reverse('fino:transaction_edit',args=[transaction.id]))
-	# 	self.assertEqual(response.status_code,200)
-	# 	a = response.context['form'].save(commit=False)
-	# 	self.assertEqual(transaction,a)
+	 	transaction1 = create_transaction(self.account1, self.cat_receita1,'description',100,True,date.today())
 
 
-	# def test_delete_anonymous_user(self):
-	# 	response = self.client.get(reverse('fino:transaction_delete',args=[self.transaction2.id]))
-	# 	self.assertEqual(response.status_code, 302)
+	 	account2 = create_account(self.user2,'name','description',1000)
+	 	cat2 = create_cattegory(self.user2, 'name','description',True)
+	 	transaction2 = create_transaction(account2, cat2,'description',100,True,date.today())
 
-	# def test_delete_get_others_transaction_with_new_user(self):
-	# 	self.client.login(username='root2',password='root2')
-	# 	response = self.client.get(reverse('fino:transaction_delete',args=[self.transaction2.id]))
-	# 	self.assertEqual(response.status_code, 302)
+	 	response = self.client.get(reverse('fino:transaction_edit',args=[transaction2.id]))
+	 	self.assertEqual(response.status_code,403)
 
-	# def test_delete_get_with_new_user_invalid_transaction_id(self):
-	# 	self.client.login(username='root2',password='root2')
-	# 	response = self.client.get(reverse('fino:transaction_delete',args=[0]))
-	# 	self.assertEqual(response.status_code, 404)
+	def test_Transaction_eddit_user_acessing_own_transaction_view(self):
+		self.client.login(username='root2',password='root2')
+		response = self.client.get(reverse('fino:transaction_list'))
+		self.assertEqual(response.status_code, 200)
 
-
-	# def test_delete_get_post_with_new_user_invalid_transaction_id(self):
-	# 	self.client.login(username='root2',password='root2')
-	# 	response = self.client.get(reverse('fino:transaction_list'))
-	# 	transaction = create_transaction(response.wsgi_request.user, 'name_test', 'description',False)
-	# 	response = self.client.get(reverse('fino:transaction_delete',args=[transaction.id]))
-	# 	self.assertEqual(response.status_code, 200)
-	# 	self.assertEqual(response.wsgi_request.user.transaction_set.all().count(),1)
-
-	# 	transaction = create_transaction(response.wsgi_request.user, 'name_test', 'description',False)
-	# 	response = self.client.get(reverse('fino:transaction_delete',args=[transaction.id]))
-	# 	self.assertEqual(response.status_code, 200)
-	# 	self.assertEqual(response.wsgi_request.user.transaction_set.all().count(),2)
-
-	# 	response = self.client.post(reverse('fino:transaction_delete',args = [transaction.id]),{'resposta':True})
-	# 	self.assertEqual(response.status_code, 302)
-	# 	self.assertEqual(response.wsgi_request.user.transaction_set.all().count(),1)
-
-	# 	response = self.client.get(reverse('fino:transaction_list'))
-	# 	self.assertEqual(response.context['list_objects'].count(),1)
+		account2 = create_account(response.wsgi_request.user,'name','description',1000)
+		cat2 = create_cattegory(response.wsgi_request.user, 'name','description',True)
+		transaction = create_transaction(account2, cat2,'description',100,True,date.today())
+		
+		response = self.client.get(reverse('fino:transaction_edit',args=[transaction.id]))
+		self.assertEqual(response.status_code,200)
+		a = response.context['form'].save(commit=False)
+		self.assertEqual(transaction,a)
 
 
+	def test_delete_anonymous_user(self):
+
+		account2 = create_account(self.user1,'name','description',1000)
+		cat2 = create_cattegory(self.user1, 'name','description',True)
+		transaction = create_transaction(account2, cat2,'description',100,True,date.today())
+
+		response = self.client.get(reverse('fino:transaction_delete',args=[transaction.id]))
+		self.assertEqual(response.status_code, 302)
+
+	def test_delete_get_others_transaction_with_new_user(self):
+		self.client.login(username='root2',password='root2')
+		
+		account2 = create_account(self.user1,'name','description',1000)
+		cat2 = create_cattegory(self.user1, 'name','description',True)
+		transaction = create_transaction(account2, cat2,'description',100,True,date.today())
+
+		response = self.client.get(reverse('fino:transaction_delete',args=[transaction.id]))
+
+		self.assertEqual(response.status_code, 403)
+
+	def test_delete_get_with_new_user_invalid_transaction_id(self):
+	 	self.client.login(username='root2',password='root2')
+	 	response = self.client.get(reverse('fino:transaction_delete',args=[0]))
+	 	self.assertEqual(response.status_code, 404)
+
+
+	def test_delete_get_post_with_new_user(self):
+		self.client.login(username='root2',password='root2')
+
+		response = self.client.get(reverse('fino:transaction_list'))
+
+		account2 = create_account(response.wsgi_request.user,'name','description',1000)
+		cat2 = create_cattegory(response.wsgi_request.user, 'name','description',True)
+		transaction = create_transaction(account2, cat2,'description',100,True,date.today())
+
+		response = self.client.get(reverse('fino:transaction_delete',args=[transaction.id]))
+		self.assertEqual(response.status_code, 200)
+		
+		transactions = Transaction.objects.filter(account__user = response.wsgi_request.user)
+		self.assertEqual(transactions.count(),1)
+
+		transaction = create_transaction(account2, cat2,'description',100,True,date.today())
+		response = self.client.get(reverse('fino:transaction_delete',args=[transaction.id]))
+		self.assertEqual(response.status_code, 200)
+		transactions = Transaction.objects.filter(account__user = response.wsgi_request.user)
+		self.assertEqual(transactions.count(),2)
+
+		response = self.client.post(reverse('fino:transaction_delete',args = [transaction.id]),{'resposta':True})
+		self.assertEqual(response.status_code, 302)
+		transactions = Transaction.objects.filter(account__user = response.wsgi_request.user)
+		self.assertEqual(transactions.count(),1)
+
+		response = self.client.get(reverse('fino:transaction_list'))
+		self.assertEqual(response.context['list_objects'].count(),1)
 
 
 
 
 
-
-
-	# 
+##########faltam--------
+#não permitir edição de formulario
+#não permitir reenvio de erro de formilario invalido
+#detail view tests

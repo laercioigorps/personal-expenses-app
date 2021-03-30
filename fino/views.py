@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
+
 
 from .forms import AccountModelForm, CattegoryModelForm, TransactionModelForm, Account_delete_form
 from .models import Account, Cattegory, Transaction
@@ -80,9 +81,7 @@ def list_account_view(request):
 
 @login_required
 def detail_account_view(request, id):
-
 	acount = get_object_or_404(Account,id = id)
-
 	if account.user == request.user:
 		print("user == user")
 		context = {
@@ -97,27 +96,27 @@ def detail_account_view(request, id):
 
 @login_required
 def edit_account_view(request, id):
+
 	account = get_object_or_404(Account, id=id)
-	if account not in request.user.account_set.all():
-		return HttpResponseRedirect(reverse('fino:account_list'))
-
+	if not account.user == request.user:
+		return HttpResponseForbidden("você não é dono disso")
 	if request.method == 'POST':
-
 		form = AccountModelForm(request.POST, instance = account)
 		if form.is_valid():
-
 			account = form.save(commit=False)
 			account.user = request.user
 			account.save()
-			return reverse('fino:account_list')
+			return HttpResponseRedirect( reverse('fino:account_list'))
 	else:
-
 		form = AccountModelForm(instance=account)
 		return render(request, 'fino/account_create.html',{'form': form,'us': request.user})
 
 @login_required
 def delete_account_view(request, id):
 	account = get_object_or_404(Account, id = id)
+	if not account.user == request.user:
+		return HttpResponseForbidden("você não é dono disso")
+
 	if account not in request.user.account_set.all():
 		return HttpResponseRedirect(reverse('fino:account_list'))
 	if request.method == 'POST':
@@ -182,8 +181,8 @@ def detail_cattegory_view(request, id):
 @login_required
 def edit_cattegory_view(request, id):
 	cattegory = get_object_or_404(Cattegory, id=id)
-	if cattegory not in request.user.cattegory_set.all():
-		return HttpResponseRedirect(reverse('fino:cattegory_list'))
+	if not cattegory.user == request.user:
+		return HttpResponseForbidden("você não é dono disso")
 	if request.method == 'POST':
 
 		form = CattegoryModelForm(request.POST, instance = cattegory)
@@ -204,8 +203,9 @@ def delete_cattegory_view(request, id):
 
 	cattegory = get_object_or_404(Cattegory, id = id)
 
-	if cattegory not in request.user.cattegory_set.all():
-		return HttpResponseRedirect(reverse('fino:cattegory_list'))
+	if not cattegory.user == request.user:
+		return HttpResponseForbidden("você não é dono disso")
+
 	if request.method == 'POST':
 		if cattegory.user == request.user:
 
@@ -284,7 +284,9 @@ def detail_transaction_view(request, id):
 @login_required
 def edit_transaction_view(request, id):
 	transaction = get_object_or_404(Transaction, id=id)
-
+	
+	if not transaction.account.user == request.user:
+		return HttpResponseForbidden("você não é dono disso")
 	if request.method == 'POST':
 
 		#form = TransactionModelForm(request.user, request.POST, instance= transaction)
@@ -303,17 +305,22 @@ def edit_transaction_view(request, id):
 
 @login_required
 def delete_transaction_view(request, id):
+
+	transaction = get_object_or_404(Transaction, id = id)
+	if not transaction.account.user == request.user:
+		return HttpResponseForbidden("você não é dono disso")
+
 	if request.method == 'POST':
 
 		form = Account_delete_form(request.POST)
-		transaction = get_object_or_404(Transaction, id = id)
+		
 
 		if transaction.account in request.user.account_set.all():
 			if form.is_valid():
 
 				transaction.delete()
 				#return HttpResponse('deletado')
-				return HttpResponseRedirect(reverse('transaction_list'))
+				return HttpResponseRedirect(reverse('fino:transaction_list'))
 			else:
 				return HttpResponse('invalido')
 	else:
