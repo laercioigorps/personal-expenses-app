@@ -1,11 +1,185 @@
-<p>você tem de <a href="{% url 'account_list' %}">saldo</a>: {{saldo}}</p> 
+{% extends 'fino/base.html' %}
 
----
-----
-<p>Suas receitas somam {{receitas}}</p>
+{% block content %}
 
-<p>Suas despesas somam {{despesas}}</p>
-<p>-----</p>
+
+
+
+
+
+<div class="row align-items-md-stretch">
+                  <div class="col-md-6">
+                     <div class=" p-3 text-white bg-success rounded-3 ">
+                        <div class="row">
+                           <div class="col-2 align-right">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="40 " height="40" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                                 <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                              </svg>
+                           </div>
+                           <div class="col-10">
+                              <h2>
+                              	
+                              		{%if receitas%}
+                              			R$ {{receitas |floatformat:2}}
+                              		{%else %}
+                              			R$ 00,00
+                              		{%endif%}
+                              </h2>
+                              <p>Receitas</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class=" p-3 bg-danger text-white border rounded-3 ">
+                        <div class="row">
+                           <div class="col-2 align-right">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                                 <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                              </svg>
+                           </div>
+                           <div class="col-10">
+                              	<h2>
+                              		{%if despesas%}
+                              			R$ {{despesas |floatformat:2}}
+                              		{%else %}
+                              			R$ 00,00
+                              		{%endif%}
+                          		</h2>
+                              <p>Despesas</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="row mt-1">
+                  <div class="col-md-6">
+                     <div class=" p-3 bg-light text-success border rounded-3">
+                        <div class="row">
+                           <div class="col-2 align-right">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="40 " height="40" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                                 <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                              </svg>
+                           </div>
+                           <div class="col-10">
+                              <h2>
+                              	{%if receitas_pendentes%}
+                              			R$ {{receitas_pendentes |floatformat:2}}
+                              		{%else %}
+                              			R$ 00,00
+                              		{%endif%}
+                              </h2>
+                              <p>Receitas Pendentes</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class=" p-3 bg-light text-danger border rounded-3 ">
+                        <div class="row">
+                           <div class="col-2 align-right">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                                 <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                              </svg>
+                           </div>
+                           <div class="col-10">
+                              <h2>{%if despesas_pendentes%}
+                              			R$ {{despesas_pendentes |floatformat:2}}
+                              		{%else %}
+                              			R$ 00,00
+                              		{%endif%}</h2>
+                              <p>Despesas Pendentes</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="row mt-2 ">
+                  <div class="col-md-6 ">
+                     <canvas class="my-4 w-100" id="myChart" height="250" ></canvas>
+                  </div>
+                  <div class="col-md-6 ">
+                     <!-- <h4 class="mt-4">Seu portifolio</h4 > -->
+                     <a class="text-success" href=""><h2 class="text-center mt-5">R$ {{saldo |floatformat:2}}</h2></a>
+                     <p class="text-center">Balanço Total</p>
+                     <table class="table table-hover">
+                        <tr>
+                           <td><strong>Carteira</strong></td>
+                           <td class=""><strong>R$ 1500,00</strong></td>
+                        </tr>
+                        <tr>
+                           <td><strong>Banco x</strong></td>
+                           <td class=""><strong>R$ 1500,00</strong></td>
+                        </tr>
+                        <tr>
+                           <td><strong>Outros</strong></td>
+                           <td class=""> <strong>R$ 1500,00</strong></td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="row mt-2 ">
+                  <div class="col-md-6">
+                     <h3 class="text-center" >Despesas por categoria</h3 >
+                     <canvas class="" id="pieChart1"  ></canvas>
+                  </div>
+                  <div class="col-md-6 ">
+                     <!-- sd -->
+                     <h3>Despesas cartão de crédito</h3>
+                     <ul class="nav nav-pills" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                           <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Fechada</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                           <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Aberta</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                           <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+                        </li>
+                     </ul>
+                     <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                           <p class="text-center">Balanço Total</p>
+                           <table class="table table-hover">
+                              <tr>
+                                 <td><strong>Carteira</strong></td>
+                                 <td class=""><strong>R$ 1500,00</strong></td>
+                              </tr>
+                              <tr>
+                                 <td><strong>Banco x</strong></td>
+                                 <td class=""><strong>R$ 1500,00</strong></td>
+                              </tr>
+                              <tr>
+                                 <td><strong>Outros</strong></td>
+                                 <td class=""> <strong>R$ 1500,00</strong></td>
+                              </tr>
+                           </table>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                           <p class="text-center">Balanço Total</p>
+                           <table class="table table-hover">
+                              <tr>
+                                 <td><strong>teste2</strong></td>
+                                 <td class=""><strong>R$ 1500,00</strong></td>
+                              </tr>
+                              <tr>
+                                 <td><strong>Banco x</strong></td>
+                                 <td class=""><strong>R$ 1500,00</strong></td>
+                              </tr>
+                              <tr>
+                                 <td><strong>Outros</strong></td>
+                                 <td class=""> <strong>R$ 1500,00</strong></td>
+                              </tr>
+                           </table>
+                        </div>
+                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">patty</div>
+                     </div>
+                     <!-- sd -->
+                  </div>
+               </div>
+
+
+
 
 <ul>
 <p>despesas por categorias</p>
@@ -14,4 +188,6 @@
 	
 {% endfor %}
 </ul>
+
+{%endblock%}
 

@@ -9,6 +9,8 @@ from django.utils import timezone
 from .models import Cattegory, Account, Transaction
 from .forms import AccountModelForm, Account_delete_form
 
+from decimal import *
+
 import datetime
 
 # Create your tests here.
@@ -666,7 +668,7 @@ class Transaction_views_test(TestCase):
 		self.assertEqual(transactions_count, 3)
 
 		account = Account.objects.get(id=self.account1.id)
-		self.assertEqual(account.total, total_before + data['total'])
+		self.assertEqual(account.total, total_before)
 
 
 	def test_transaction_list_view_with_new_user(self):
@@ -798,6 +800,204 @@ class Transaction_views_test(TestCase):
 
 		response = self.client.get(reverse('fino:transaction_list'))
 		self.assertEqual(response.context['list_objects'].count(),1)
+
+
+
+
+class HomePageTest(TestCase):
+
+	def setUp(self):
+		self.user1 = User.objects.create_user('root','teste@gmail.com','root')
+		self.user2 = User.objects.create_user('root2','teste@gmail.com','root2')
+		self.user3 = User.objects.create_user('root3','test@gmail.com','root3')
+
+		self.cat_receita1 = create_cattegory(self.user1, 'salario name',
+			'description of sallary cattegory', is_receita=True)
+		self.cat_receita2 = create_cattegory(self.user1, 'investimento name',
+			'description of investimento cattegory', is_receita=True)
+		self.cat_receita3 = create_cattegory(self.user1, 'doação name',
+			'description of doação cattegory', is_receita=True)
+
+		self.cat_despesa1 = create_cattegory(self.user1, 'casa name',
+			'description of casa cattegory', is_receita=False)
+		self.cat_despesa2 = create_cattegory(self.user1, 'comida name',
+			'description of comida cattegory', is_receita=False)
+		self.cat_despesa3 = create_cattegory(self.user1, 'roupa name',
+			'description of roupa cattegory', is_receita=False)
+
+
+		self.account1 = create_account(self.user1,'carteira','description of carteira',1000.00)
+		self.account2 = create_account(self.user1,'banco bradesco','description of bradesco',0)
+		self.account3 = create_account(self.user1, 'banco inter','description of inter',2.50)
+
+	def test_get_home_page_no_user(self):
+		response = self.client.get(reverse('fino:home_page'))
+		self.assertEqual(response.status_code, 302)
+
+	def test_get_home_page_view_new_user(self):
+
+		data = {
+			'username' : 'username',
+			'password1' : 'lips1997',
+			'password2' : 'lips1997',
+		}
+
+		response = self.client.post(reverse('fino:signup'), data)
+
+	
+		self.assertEqual(response.status_code,302)
+		response = self.client.get(reverse('fino:home_page'))
+		self.assertEqual(response.status_code, 200)
+
+		self.assertEqual(response.context['saldo'], 0)
+		self.assertEqual(response.context['receitas'], None)
+		self.assertEqual(response.context['despesas'], None)
+		self.assertEqual(response.context['despesas_pendentes'], None)
+		self.assertEqual(response.context['receitas_pendentes'], None)
+		self.assertEqual(response.context['despesa_por_categoria'], {})
+
+	def test_get_home_page_view_new_user(self):
+
+		data = {
+			'username' : 'username',
+			'password1' : 'lips1997',
+			'password2' : 'lips1997',
+		}
+
+		response = self.client.post(reverse('fino:signup'), data)
+
+	
+		self.assertEqual(response.status_code,302)
+		response = self.client.get(reverse('fino:home_page'))
+		self.assertEqual(response.status_code, 200)
+
+		self.assertEqual(response.context['saldo'], 0)
+		self.assertEqual(response.context['receitas'], None)
+		self.assertEqual(response.context['despesas'], None)
+		self.assertEqual(response.context['despesas_pendentes'], None)
+		self.assertEqual(response.context['receitas_pendentes'], None)
+		self.assertEqual(response.context['despesa_por_categoria'], {})
+
+
+	def test_get_home_page_add_data(self):
+
+		data = {
+			'username' : 'username',
+			'password1' : 'lips1997',
+			'password2' : 'lips1997',
+		}
+
+		response = self.client.post(reverse('fino:signup'), data)
+	
+		ac = create_account(response.wsgi_request.user,'banco','description',0)
+
+		accounts = response.wsgi_request.user.account_set.all()
+
+		cattegories_receitas = response.wsgi_request.user.cattegory_set.all().filter(is_receita = True)
+		cattegories_despesas = response.wsgi_request.user.cattegory_set.all().filter(is_receita = False)
+
+		total_before = 0
+
+		print ('----accounts')
+		print (cattegories_receitas.filter(name__startswith='Salário').get().name)
+
+		t_data = {
+			'account' : accounts.filter(name__startswith='Carteira').get().id,
+			'cattegory' : cattegories_receitas.filter(name__startswith='Salário').get().id,
+			'description' : 'description of account1 and cattegory 1',
+			'total' : 100,
+			'is_completed' : True,
+			'date': date.today(),
+		}
+
+		response = self.client.post(reverse('fino:transaction_create'),t_data)
+		self.assertEqual(response.status_code,302)
+
+		response = self.client.get(reverse('fino:home_page'))
+		self.assertEqual(response.status_code, 200)
+
+		self.assertEqual(response.context['saldo'], total_before + 100)
+		self.assertEqual(response.context['receitas'], 100)
+		self.assertEqual(response.context['despesas'], None)
+		self.assertEqual(response.context['despesas_pendentes'], None)
+		self.assertEqual(response.context['receitas_pendentes'], None)
+		self.assertEqual(response.context['despesa_por_categoria'], {})
+
+		total_before = response.context['saldo']
+
+		t_data = {
+			'account' : accounts.filter(name__startswith='Carteira').get().id,
+			'cattegory' : cattegories_despesas.filter(name__startswith='Roupa').get().id,
+			'description' : 'description of account1 and cattegory 1',
+			'total' : 30,
+			'is_completed' : True,
+			'date': date.today(),
+		}
+
+		response = self.client.post(reverse('fino:transaction_create'),t_data)
+		self.assertEqual(response.status_code,302)
+
+		response = self.client.get(reverse('fino:home_page'))
+		self.assertEqual(response.status_code, 200)
+
+		self.assertEqual(response.context['saldo'], 70)
+		self.assertEqual(response.context['receitas'], 100)
+		self.assertEqual(response.context['despesas'], -30)
+		self.assertEqual(response.context['despesas_pendentes'], None)
+		self.assertEqual(response.context['receitas_pendentes'], None)
+		self.assertEqual(response.context['despesa_por_categoria'], {'Roupa' : -30})
+
+
+		total_before = response.context['saldo']
+
+		t_data = {
+			'account' : accounts.filter(name__startswith='Carteira').get().id,
+			'cattegory' : cattegories_despesas.filter(name__startswith='Moradia').get().id,
+			'description' : 'description of account1 and cattegory 1',
+			'total' : 10.5,
+			'is_completed' : False,
+			'date': date.today(),
+		}
+
+		response = self.client.post(reverse('fino:transaction_create'),t_data)
+		self.assertEqual(response.status_code,302)
+
+		response = self.client.get(reverse('fino:home_page'))
+		self.assertEqual(response.status_code, 200)
+
+		self.assertEqual(response.context['saldo'],70)
+		self.assertEqual(response.context['receitas'], 100)
+		self.assertEqual(response.context['despesas'], -40.5)
+		self.assertEqual(response.context['despesas_pendentes'], -10.5)
+		self.assertEqual(response.context['receitas_pendentes'], None)
+		self.assertEqual(response.context['despesa_por_categoria'], {'Roupa' : -30})
+
+
+		total_before = response.context['saldo']
+
+		t_data = {
+			'account' : accounts.filter(name__startswith='Carteira').get().id,
+			'cattegory' : cattegories_receitas.filter(name__startswith='Salário').get().id,
+			'description' : 'description of account1 and cattegory 1',
+			'total' : 150.10,
+			'is_completed' : False,
+			'date': date.today(),
+		}
+
+		response = self.client.post(reverse('fino:transaction_create'),t_data)
+		self.assertEqual(response.status_code,302)
+
+		response = self.client.get(reverse('fino:home_page'))
+		self.assertEqual(response.status_code, 200)
+
+		self.assertEqual(response.context['saldo'],70)
+		self.assertEqual(response.context['receitas'], 100)
+		self.assertEqual(response.context['despesas'], -40.5)
+		self.assertEqual(response.context['despesas_pendentes'], -10.5)
+		self.assertEqual(response.context['receitas_pendentes'], Decimal('150.10'))
+		self.assertEqual(response.context['despesa_por_categoria'], {'Roupa' : -30})
+	
+
 
 
 

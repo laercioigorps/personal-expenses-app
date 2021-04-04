@@ -16,10 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from django.contrib.auth import views as auth_views
 
 app_name = 'fino'
 urlpatterns = [
+
+    path('signup/', views.signup_view, name="signup"),
+    path('login/', auth_views.LoginView.as_view(template_name='fino/login.html'),name='login'),
     path('', views.home_view, name= 'home_page'),
+    path('dashboard', views.newview, name= 'home_page'),
 
     path('account/', views.create_account_view, name='account_create'),
     path('account/<int:id>', views.detail_account_view,name='account_detail'),

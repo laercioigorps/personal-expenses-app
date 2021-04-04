@@ -15,6 +15,7 @@ class Account(models.Model):
 		return self.name
 
 	
+	
 
 
 class Cattegory(models.Model):
@@ -32,7 +33,7 @@ class Transaction(models.Model):
 	account = models.ForeignKey(Account,on_delete=models.CASCADE)
 	cattegory = models.ForeignKey(Cattegory,on_delete=models.CASCADE)
 	description = models.CharField(max_length=200,default = '')
-	total = models.DecimalField(max_digits=5, decimal_places=2)
+	total = models.DecimalField(max_digits=10, decimal_places=2)
 	is_completed = models.BooleanField(default=False)
 	date = models.DateField( default=date.today)
 
