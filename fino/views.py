@@ -60,7 +60,7 @@ def home_view(request):
 	print (dic)	
 	context = {
 
-		'saldo' : accounts.aggregate(Sum('total'))['total__sum'].normalize(),
+		'saldo' : accounts.aggregate(Sum('total'))['total__sum'],
 		'receitas' : receitas_transactions.aggregate(Sum('total'))['total__sum'],
 		'despesas' : transactions_despesas_all.aggregate(Sum('total'))['total__sum'],
 		'despesas_pendentes' : despesas_pendentes_transactions.aggregate(Sum('total'))['total__sum'],

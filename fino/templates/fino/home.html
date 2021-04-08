@@ -1,4 +1,7 @@
 {% extends 'fino/base.html' %}
+{% block h1 %}
+		Dashboard
+{% endblock %}
 
 {% block content %}
 
@@ -100,7 +103,15 @@
                   </div>
                   <div class="col-md-6 ">
                      <!-- <h4 class="mt-4">Seu portifolio</h4 > -->
-                     <a class="text-success" href=""><h2 class="text-center mt-5">R$ {{saldo |floatformat:2}}</h2></a>
+                     <a class="text-success" href="">
+                     	<h2 class="text-center mt-5">
+                     		{%if saldo%}
+                              			R$ {{saldo |floatformat:2}}
+                              		{%else %}
+                              			R$ 00,00
+                              		{%endif%}</h2>
+                     	
+                     </h2></a>
                      <p class="text-center">Balanço Total</p>
                      <table class="table table-hover">
                         <tr>
@@ -121,7 +132,7 @@
                <div class="row mt-2 ">
                   <div class="col-md-6">
                      <h3 class="text-center" >Despesas por categoria</h3 >
-                     <canvas class="" id="pieChart1"  ></canvas>
+                     <canvas id="pieChart" style="max-width: 500px;"></canvas>
                   </div>
                   <div class="col-md-6 ">
                      <!-- sd -->

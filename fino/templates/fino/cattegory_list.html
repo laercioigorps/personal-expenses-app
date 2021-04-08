@@ -1,15 +1,175 @@
-{%  if list_objects  %}
+{% extends 'fino/base.html' %}
 
-	<ul>
-	{% for object in list_objects %}
-		<li><a href="{% url 'fino:cattegory_detail' object.id %}">{{object.name}} - {{object.description}}</a></li>
+{% block h1 %}
+Categorias
+{% endblock %}
 
-	{%endfor%}
-	</ul>
-lista encontrada
-{%else%}
-Nenhuma conta, para criar voce pode ir em <a href="{% url 'fino:account_create' %}">criar conta</a>
-
-{% endif %}
+{% block content %}
 
 
+
+
+
+
+<div class="row align-items-md-stretch">
+                  <div class="col-md-6">
+                     <div class=" p-3 bg-light text-success border rounded-3">
+                        <div class="row">
+                           <div class="col-2 align-right">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="40 " height="40" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                                 <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                              </svg>
+                           </div>
+                           <div class="col-10">
+                              <h2>
+                              	
+                              		{%if receitas%}
+                              			R$ {{receitas |floatformat:2}}
+                              		{%else %}
+                              			R$ 00,00
+                              		{%endif%}
+                              </h2>
+                              <p>Receitas Totais</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="col-md-6">
+                     <div class=" p-3 bg-light text-success border rounded-3">
+                        <div class="row">
+                           <div class="col-2 align-right">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                                 <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                              </svg>
+                           </div>
+                           <div class="col-10">
+                              	<h2>
+                              		{%if despesas%}
+                              			R$ {{despesas |floatformat:2}}
+                              		{%else %}
+                              			R$ 00,00
+                              		{%endif%}
+                          		</h2>
+                              <p>Despesas Totais</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  
+               </div>
+               <div class="row mt-1">
+                  <div class="col-md-6">
+                  	<canvas id="pieChart" style="max-width: 500px;"></canvas>
+                  	<h3 class="text-center">Receitas</h3>
+                     <table class="table table-hover">
+                     	<tr class="text-center">
+                           <td><strong>Categoria</strong></td>
+                           <td class=""><strong>ganho esse mes</strong></td>
+                           <td class=""><strong>despesas</strong></td>
+                           <td class=""><strong>pendentes</strong></td>
+                           <td class=""><strong>ganho total</strong></td>
+                           
+                        </tr>
+                        {% if list_objects%}
+                        {%for object in list_objects%}
+                        {%if object.is_receita%}
+                        <tr>
+                           <td><a href="{%url 'fino:cattegory_detail' object.id%}"><strong>{{object.name}}</strong></a></td>
+                           <td class="">R$ 1500,00</td>
+                           <td class="">R$ 1500,00</td>
+                           <td class="">R$ 1500,00</td>
+                           <td class="">R$ 1500,00</td>
+                           <td class="">R$ {{object.total}}</td>
+                           <td class="">R$ 1500,00</td>
+
+                        </tr>
+                        {%endif%}
+                        {%endfor%}
+                        {%else%}
+
+                        <tr>
+                           <td><a href="#"><strong>----------</strong></a></td>
+                           <td class="">----------</td>
+                           <td class="">----------</td>
+                           <td class="">----------</td>
+                           <td class="">----------</td>
+                           <td class="">----------</td>
+                           <td class="">----------</td>
+
+                        </tr>
+
+
+                        {%endif%}
+                        
+                     </table>
+                  </div>
+                  <div class="col-md-6">
+                  	
+                     <canvas id="pieChart2" style="max-width: 500px;"></canvas>
+                     <h3 class="text-center">Despesas</h3>
+
+                  	<table class="table table-hover">
+                     	<tr class="text-center">
+
+                           <td><strong>Conta</strong></td>
+                           <td class=""><strong>receitas</strong></td>
+                           <td class=""><strong>despesas</strong></td>
+                           <td class=""><strong>receitas pendentes</strong></td>
+                           <td class=""><strong>despesas pendentes</strong></td>
+                           <td class=""><strong>saldo</strong></td>
+                           <td class=""><strong>saldo previsto</strong></td>
+                        </tr>
+                        {% if list_objects%}
+                        {%for object in list_objects%}
+                        {%if not object.is_receita%}
+                        <tr>
+                           <td><a href="{%url 'fino:account_detail' object.id%}"><strong>{{object.name}}</strong></a></td>
+                           <td class="">R$ 1500,00</td>
+                           <td class="">R$ 1500,00</td>
+                           <td class="">R$ 1500,00</td>
+                           <td class="">R$ 1500,00</td>
+                           <td class="">R$ {{object.total}}</td>
+                           <td class="">R$ 1500,00</td>
+
+                        </tr>
+                        {%endif%}
+                        {%endfor%}
+                        {%else%}
+
+                        <tr>
+                           <td><a href="#"><strong>----------</strong></a></td>
+                           <td class="">----------</td>
+                           <td class="">----------</td>
+                           <td class="">----------</td>
+                           <td class="">----------</td>
+                           <td class="">----------</td>
+                           <td class="">----------</td>
+
+                        </tr>
+
+
+                        {%endif%}
+                        
+                     </table>
+
+                     
+                  </div>
+               </div>
+               <div class="row mt-2 ">
+                  <div class="col-md-12 ">
+                     <canvas class="my-4 w-100" id="myChart" height="250" ></canvas>
+                  </div>
+                  
+               </div>
+               
+
+
+
+
+{%endblock%}
+{% load static %}
+{%block scripts%}
+
+<script src="{% static 'fino/js/cattegory_list.js' %}"></script>
+{%endblock%}
