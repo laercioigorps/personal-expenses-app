@@ -99,7 +99,7 @@
                </div>
                <div class="row mt-2 ">
                   <div class="col-md-6 ">
-                     <canvas class="my-4 w-100" id="myChart" height="250" ></canvas>
+                    <canvas id="pie-chart"></canvas>
                   </div>
                   <div class="col-md-6 ">
                      <!-- <h4 class="mt-4">Seu portifolio</h4 > -->
@@ -132,7 +132,7 @@
                <div class="row mt-2 ">
                   <div class="col-md-6">
                      <h3 class="text-center" >Despesas por categoria</h3 >
-                     <canvas id="pieChart" style="max-width: 500px;"></canvas>
+                     <canvas id="pieChart" style="max-height:250px;"></canvas>
                   </div>
                   <div class="col-md-6 ">
                      <!-- sd -->
@@ -202,3 +202,145 @@
 
 {%endblock%}
 
+{%block fab%}
+        <script type="text/javascript">
+        jQuery(function($){
+      $('#btncollapzion').Collapzion({
+              _child_attribute:[
+                  {
+                    'label':'Nova Receita',
+                    'url':"{%url 'fino:transaction_by_type/create' 'receita'%}",
+                    'icon':'&#xe8e5;'
+                  },
+                  {
+                  'label':'Nova Despesa',
+                  'url':"{%url 'fino:transaction_by_type/create' 'despesa'%}",
+                  'icon':'&#Xe8e3;'
+                  },
+                  {
+                  'label':'Tranferencia',
+                  'url':'#',
+                  'icon':'&#xf232;'
+                  },
+                  {
+                  'label':'Despesa Cartão',
+                  'url':'#',
+                  'icon':'&#xe870;'
+                  },
+              ],
+              _main_btn_color:'#4285f4;',
+              _child_btn_color:'#f4645f;',
+        
+          });
+    });
+      </script>
+      {%endblock%}
+      {% block scripts %}
+      {% load static %}
+      <!-- <script src="{% static 'fino/js/dashboard.js' %}"></script> -->
+      <script src="{% static 'fino/js/collapzion.min.js' %}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script type="text/javascript">
+
+          
+
+
+
+         const labels = ['q','b','2'];
+         const data = {
+           labels: labels,
+           datasets: [
+             {
+               label: 'Receitas',
+               data: [1,2,3],
+               borderColor: "#198754",
+               yAxisID: 'y',
+             },
+             {
+               label: 'Despesas',
+               data:[2,1,4],
+               borderColor: "#F7464A",
+               yAxisID: 'y1',
+             }
+           ]
+         };
+
+                      const config = {
+           type: 'line',
+           data: data,
+           options: {
+             responsive: true,
+             interaction: {
+               mode: 'index',
+               intersect: false,
+             },
+             stacked: false,
+             plugins: {
+               title: {
+                 display: true,
+                 text: 'Chart.js Line Chart - Multi Axis'
+               }
+             },
+             scales: {
+               y: {
+                 type: 'linear',
+                 display: true,
+                 position: 'left',
+               },
+               y1: {
+                 type: 'linear',
+                 display: true,
+                 position: 'right',
+
+                 // grid line settings
+                 grid: {
+                   drawOnChartArea: false, // only want the grid lines for one axis to show up
+                 },
+               },
+             }
+           },
+         };
+
+             
+
+
+         const data2 = {
+           labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
+           datasets: [
+             {
+               label: 'Dataset 1',
+               data: [2,5,2,2,1],
+               
+             }
+           ]
+         };
+         const config2 = {
+           type: 'pie',
+           data: data2,
+           options: {
+             responsive: true,
+             plugins: {
+               legend: {
+                 position: 'top',
+               },
+               title: {
+                 display: true,
+                 text: 'Chart.js Pie Chart'
+               }
+             }
+           },
+         };
+
+
+
+         window.onload = function() {
+
+               var ctx = document.getElementById('pie-chart').getContext('2d');
+               window.myPie = new Chart(ctx, config);
+
+               var ctx2 = document.getElementById('pieChart').getContext('2d');
+               window.myPie2 = new Chart(ctx2, config2);
+             };
+      </script>
+      
+      {% endblock %}

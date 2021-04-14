@@ -20,7 +20,7 @@ from django.contrib.auth import views as auth_views
 
 app_name = 'fino'
 urlpatterns = [
-
+path('teste/', views.teste_view, name=""),
     path('signup/', views.signup_view, name="signup"),
     path('login/', auth_views.LoginView.as_view(template_name='fino/login.html'),name='login'),
     path('', views.home_view, name= 'home_page'),
@@ -39,6 +39,7 @@ urlpatterns = [
     path('cattegory/list/', views.list_cattegory_view, name='cattegory_list'),
 
     path('transaction/', views.create_transaction_view, name= 'transaction_create'),
+    path('transaction/create/<str:types>', views.create_transaction_by_type_view, name= 'transaction_by_type/create'),
     path('transaction/<int:id>', views.detail_transaction_view,name='transaction_detail'),
     path('transaction/<int:id>/edit', views.edit_transaction_view,name='transaction_edit'),
     path('transaction/<int:id>/delete', views.delete_transaction_view,name='transaction_delete'),

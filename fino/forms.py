@@ -44,6 +44,35 @@ class TransactionModelForm(forms.ModelForm):
 		return total
 
 
+class TransactionTypeModelForm(forms.ModelForm):
+
+	class Meta:
+			
+		model = Transaction
+		fields = ('account','cattegory', 'description','total', 'is_completed', 'date',)
+
+	def __init__(self,user,type,*args, **kwargs):
+		super (TransactionTypeModelForm,self).__init__(*args,**kwargs)
+		self.fields['account'].queryset = Account.objects.filter(user= user)
+		self.fields['cattegory'].queryset = Cattegory.objects.filter(user= user)
+		if type == 'receita':
+			print("----------------acertou")
+			self.fields['cattegory'].queryset = self.fields['cattegory'].queryset.filter(is_receita=True)
+		elif type == 'despesa':
+			self.fields['cattegory'].queryset = self.fields['cattegory'].queryset.filter(is_receita=False)
+		
+
+	def clean_total(self):
+		total = self.cleaned_data['total']
+		if total < 0:
+		    raise ValidationError("Você deve acicionar um valor positivo!")
+
+		if total == 0:
+			raise ValidationError("isso não foi de graça!!")
+        # Always return a value to use as the new cleaned data, even if
+        # this method didn't change it.
+		return total
+
 	
 		
 

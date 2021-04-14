@@ -6,13 +6,16 @@ from django.urls import reverse
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 
-from .forms import AccountModelForm, CattegoryModelForm, TransactionModelForm, Account_delete_form
+from .forms import AccountModelForm, CattegoryModelForm, TransactionModelForm, Account_delete_form,TransactionTypeModelForm
 from .models import Account, Cattegory, Transaction
 
 # Create your views here.
 
 #views for account -----------------------------------------------------------------
 
+
+def teste_view(request):
+	return render(request,'fino/test.html')
 def newview(request):
 	return render(request, 'fino/base.html')
 
@@ -261,6 +264,28 @@ def create_transaction_view(request):
 		return render(request, 'fino/transaction_create.html',{'form':form})
 
 @login_required
+def create_transaction_by_type_view(request, types):
+
+	if request.method == 'POST':
+		form = TransactionTypeModelForm(request.user,types, request.POST)
+		if form.is_valid():
+			transaction = form.save(commit=False)
+			if transaction.cattegory.is_receita == False:
+				transaction.total = transaction.total * -1
+			if transaction.is_completed:
+				transaction.account.total += transaction.total
+			transaction.save()
+			transaction.account.save()
+			return HttpResponseRedirect(reverse('fino:transaction_list'))
+		else:
+			print('-----------invalido------')
+			print(request)
+			return render(request, 'fino/transaction_create.html',{'form':form})
+	else:
+		form = TransactionTypeModelForm(request.user,types)
+		return render(request, 'fino/transaction_create.html',{'form':form})
+
+@login_required
 def list_transaction_view(request):
 	#accounts = get_list_or_404(Account.objects.filter(user = request.user))
 	transaction = Transaction.objects.filter(cattegory__user = request.user)
@@ -382,3 +407,4 @@ def user_basic_setup(user):
 	create_cattegory(user,'Roupa', 'descrição da categoria Roupa', False)
 	create_cattegory(user,'Saúde', 'descrição da categoria Saúde', False)
 	create_cattegory(user,'Transporte', 'descrição da categoria Transporte', False)
+	user.save()

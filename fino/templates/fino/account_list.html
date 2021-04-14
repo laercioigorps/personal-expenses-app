@@ -121,7 +121,30 @@ Accounts
 
 {%endblock%}
 
-
+{%block fab%}
+        <script type="text/javascript">
+        jQuery(function($){
+      $('#btncollapzion').Collapzion({
+              _child_attribute:[
+                  {
+                    'label':'Nova Conta',
+                    'url':"{%url 'fino:account_create'%}",
+                    'icon':'&#xe8e5;'
+                  },
+                  {
+                  'label':'Tranferencia',
+                  'url':'#',
+                  'icon':'&#xf232;'
+                  },
+                  
+              ],
+              _main_btn_color:'#4285f4;',
+              _child_btn_color:'#f4645f;',
+        
+          });
+    });
+      </script>
+      {%endblock%}
 
 
 

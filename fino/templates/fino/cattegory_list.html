@@ -172,4 +172,30 @@ Categorias
 {%block scripts%}
 
 <script src="{% static 'fino/js/cattegory_list.js' %}"></script>
+<script src="{% static 'fino/js/collapzion.min.js' %}"></script>
 {%endblock%}
+
+{%block fab%}
+        <script type="text/javascript">
+        jQuery(function($){
+      $('#btncollapzion').Collapzion({
+              _child_attribute:[
+                  {
+                    'label':'Nova Categoria de Receita',
+                    'url':"{%url 'fino:cattegory_create'%}",
+                    'icon':'&#xe8e5;'
+                  },
+                  {
+                  'label':'Nova Categoria de Receita',
+                  'url':"{%url 'fino:cattegory_create'%}",
+                  'icon':'&#xf232;'
+                  },
+                  
+              ],
+              _main_btn_color:'#4285f4;',
+              _child_btn_color:'#f4645f;',
+        
+          });
+    });
+      </script>
+      {%endblock%}

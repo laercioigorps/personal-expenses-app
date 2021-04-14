@@ -125,3 +125,6 @@ STATIC_URL = '/static/'
 #----tem que ser revisado
 LOGIN_URL = '/admin/'
 
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+]

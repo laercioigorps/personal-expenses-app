@@ -1,18 +1,100 @@
-<ul>
- 
-<label>transaction name:</label>
-<li>{{object.name}}</li>
+{% extends 'fino/base.html' %}
 
-<label>transaction description:</label>
-<li></li>{{object.description}}
+{% block h1 %}
+Transação {{object.id}}
+{% endblock %}
 
-<label>transaction total:</label>
-<li>{{object.total}}</li>
+{% block content %}
 
- 
-</ul>
 
-/n
-<a href="{% url 'transaction_edit' object.id %}">editar transaction</a>
 
-<a href="{% url 'transaction_delete' object.id %}">deletar transaction</a>
+
+
+
+<div class="row align-items-md-stretch">
+                  <div class="col-md-12">
+                     <div class=" p-3 bg-light text-success border rounded-3">
+                        <div class="row">
+                           
+                           <div class="col-12 text-center">
+                              <h2>
+                              	
+                              		{%if object%}
+                              			R$ {{object.total |floatformat:2}}
+                              		{%else %}
+                              			R$ 00,00
+                              		{%endif%}
+                              </h2>
+                              <p>Esse mês</p>
+                              
+                              <a class="btn btn-primary btn-lg" type="button" href="{% url 'fino:transaction_edit' object.id%}">Editar</a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+
+                  
+                  
+               </div>
+               <div class="row mt-1">
+                  <div class="col-md-12">
+                  	<div class="row text-center">
+                  		<div class="col-md-6">
+					        <div class="p-1 bg-light border rounded-3">
+					          <h4 class="text-success">Efetivado</h4>
+					          
+					          
+					        </div>
+					    </div>
+					      <div class="col-md-6">
+					        <div class="p-1 bg-light border rounded-3">
+					          <h4>09/08/1997</h4>
+					          
+					        </div>
+					      </div>
+                  	</div>
+                  	<div class="row text-center mt-1">
+                  		<div class="col-md-6">
+					        <div class="p-1 bg-light border rounded-3">
+					          
+					          
+					          <a class="btn btn-primary btn-lg" type="button" href="{% url 'fino:cattegory_detail' object.cattegory.id%}">{{object.cattegory}}</a>
+					        </div>
+					    </div>
+					      <div class="col-md-6">
+					        <div class="p-1 bg-light border rounded-3">
+					          <a class="btn btn-primary btn-lg" type="button" href="{% url 'fino:account_detail' object.account.id%}">{{object.account}}</a>
+					          
+					        </div>
+					      </div>
+                  	</div>
+
+                  	<div class="row text-center mt-1">
+                  		<div class="col-md-12">
+					        <div class="p-1 bg-light border rounded-3">
+					          
+					          <p>Descrição e observações</p>
+					        </div>
+					    </div>
+					      
+                  	</div>
+                  	
+
+                  	
+                  </div>
+                  
+               </div>
+               <div class="row mt-2 ">
+                  <div class="col-md-12 ">
+                     <canvas id="pieChart" style="max-width: 500px;"></canvas>
+                  </div>
+                  
+               </div>
+               
+
+
+
+
+{%endblock%}
+
