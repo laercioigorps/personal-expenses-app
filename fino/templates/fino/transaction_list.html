@@ -62,25 +62,25 @@ Transactions
                <div class="row ">
                	<div class="col-md-1"></div>
                		<div class="col-md-10">
-               			<table class="table table-hover">
+               			<table class="table table-hover" data-toggle="table" >
                      	<tr class="text-center">
                            <td><strong>Conta</strong></td>
-                           <td class=""><strong>Categoria</strong></td>
-                           <td class=""><strong>Descricao</strong></td>
-                           <td class=""><strong>Total</strong></td>
+                           <td class="" ><strong>Categoria</strong></td>
+                           <td class="" ><strong>Descricao</strong></td>
+                           <td class="" ><strong>Total</strong></td>
                            <td class=""><strong>Efetivada</strong></td>
                            <td class=""><strong>Data</strong></td>
                  
                         </tr>
                         {% if list_objects%}
                         {%for object in list_objects%}
-                        <tr>
+                        <tr class="{%if object.cattegory.is_receita == True%} text-success {%else%} text-danger{%endif%}">
                            <td><a href="{%url 'fino:transaction_detail' object.id%}"><strong>{{object.account}}</strong></a></td>
-                           <td class="">R$ 1500,00</td>
-                           <td class="">R$ 1500,00</td>
-                           <td class="">R$ 1500,00</td>
-                           <td class="">R$ 1500,00</td>
-                           <td class="">R$ {{object.total}}</td>
+                           <td class="">{{object.cattegory}}</td>
+                           <td class="">{{object.description}}</td>
+                           <td class="" >R$ {{object.total}}</td>
+                           <td class="">{{object.is_completed}}</td>
+                           <td class="">{{object.date}}</td>
                            
 
                         </tr>
@@ -141,7 +141,22 @@ Transactions
         
           });
     });
+
+
+
+  //       $('.table > tbody > tr').click(function() {
+  //   		window.location = "url";
+		// });
       </script>
       {%endblock%}
+
+      {% block scripts %}
+      {% load static %}
+      <!-- <script src="{% static 'fino/js/dashboard.js' %}"></script> -->
+      <script src="{% static 'fino/js/collapzion.min.js' %}"></script>
+      <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+
+      <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+      {% endblock %}
 
 

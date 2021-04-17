@@ -60,8 +60,8 @@ Categorias
                </div>
                <div class="row mt-1">
                   <div class="col-md-6">
-                  	<canvas id="pieChart" style="max-width: 500px;"></canvas>
-                  	<h3 class="text-center">Receitas</h3>
+                  	<canvas id="pieChartReceitas" style="max-width: 400px;"></canvas>
+                  	<!-- <h3 class="text-center">Receitas</h3> -->
                      <table class="table table-hover">
                      	<tr class="text-center">
                            <td><strong>Categoria</strong></td>
@@ -104,10 +104,10 @@ Categorias
                         
                      </table>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-6 ">
                   	
-                     <canvas id="pieChart2" style="max-width: 500px;"></canvas>
-                     <h3 class="text-center">Despesas</h3>
+                     <canvas id="pieChartDespesas" style="max-width: 400px;"></canvas>
+                     <!-- <h3 class="text-center">Despesas</h3> -->
 
                   	<table class="table table-hover">
                      	<tr class="text-center">
@@ -156,12 +156,12 @@ Categorias
                      
                   </div>
                </div>
-               <div class="row mt-2 ">
+              <!--  <div class="row mt-2 ">
                   <div class="col-md-12 ">
                      <canvas class="my-4 w-100" id="myChart" height="250" ></canvas>
                   </div>
                   
-               </div>
+               </div> -->
                
 
 
@@ -169,11 +169,7 @@ Categorias
 
 {%endblock%}
 {% load static %}
-{%block scripts%}
 
-<script src="{% static 'fino/js/cattegory_list.js' %}"></script>
-<script src="{% static 'fino/js/collapzion.min.js' %}"></script>
-{%endblock%}
 
 {%block fab%}
         <script type="text/javascript">
@@ -198,4 +194,98 @@ Categorias
           });
     });
       </script>
+      {%endblock%}
+
+      {% block scripts %}
+      {% load static %}
+      <!-- <script src="{% static 'fino/js/dashboard.js' %}"></script> -->
+      <script src="{% static 'fino/js/collapzion.min.js' %}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script type="text/javascript">
+
+             
+
+
+         const data1 = {
+           labels: {{cat_receitas_labels | safe}},
+           datasets: [
+             {
+               label: 'Dataset 1',
+               data: {{cat_receitas_data | safe}},
+               backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
+          hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"],
+               
+             }
+           ]
+         };
+         const config1 = {
+           type: 'pie',
+           data: data1,
+           options: {
+             responsive: true,
+             plugins: {
+               legend: {
+                 position: 'bottom',
+               },
+               title: {
+                 display: true,
+                 text: 'Receitas',
+
+
+               }
+             }
+           },
+         };
+
+
+         const data2 = {
+           labels: {{cat_despesas_labels | safe}},
+           datasets: [
+             {
+               label: 'Dataset 2',
+               data: {{cat_despesas_data | safe}},
+               backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
+          hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"],
+               
+             }
+           ]
+         };
+         const config2 = {
+           type: 'pie',
+           data: data2,
+           options: {
+             responsive: true,
+             plugins: {
+               legend: {
+                 position: 'bottom',
+               },
+               title: {
+                 display: true,
+                 text: 'Despesas',
+                 
+               }
+             }
+           },
+         };
+
+
+
+
+
+         window.onload = function() {
+
+               var ctx = document.getElementById('pieChartReceitas').getContext('2d');
+               window.myPie = new Chart(ctx, config1);
+
+               var ctx2 = document.getElementById('pieChartDespesas').getContext('2d');
+               window.myPie2 = new Chart(ctx2, config2);
+             };
+      </script>
+      
+      {% endblock %}
+
+      {%block style%}
+         canvas{
+          margin: 0 auto;
+          }
       {%endblock%}

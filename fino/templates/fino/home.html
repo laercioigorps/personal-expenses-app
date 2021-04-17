@@ -22,13 +22,13 @@
                            <div class="col-10">
                               <h2>
                               	
-                              		{%if receitas%}
+                              		{%if receitas  and  receitas != 'None'%}
                               			R$ {{receitas |floatformat:2}}
                               		{%else %}
                               			R$ 00,00
                               		{%endif%}
                               </h2>
-                              <p>Receitas</p>
+                              <p>Receitas esse mês</p>
                            </div>
                         </div>
                      </div>
@@ -43,13 +43,13 @@
                            </div>
                            <div class="col-10">
                               	<h2>
-                              		{%if despesas%}
+                              		{%if despesas  and  despesas != 'None'%}
                               			R$ {{despesas |floatformat:2}}
                               		{%else %}
                               			R$ 00,00
                               		{%endif%}
                           		</h2>
-                              <p>Despesas</p>
+                              <p>Despesas desse mês</p>
                            </div>
                         </div>
                      </div>
@@ -66,7 +66,7 @@
                            </div>
                            <div class="col-10">
                               <h2>
-                              	{%if receitas_pendentes%}
+                              	{%if receitas_pendentes  and  receitas_pendentes != 'None'%}
                               			R$ {{receitas_pendentes |floatformat:2}}
                               		{%else %}
                               			R$ 00,00
@@ -86,7 +86,7 @@
                               </svg>
                            </div>
                            <div class="col-10">
-                              <h2>{%if despesas_pendentes%}
+                              <h2>{%if despesas_pendentes and  despesas_pendentes != 'None'%}
                               			R$ {{despesas_pendentes |floatformat:2}}
                               		{%else %}
                               			R$ 00,00
@@ -114,18 +114,12 @@
                      </h2></a>
                      <p class="text-center">Balanço Total</p>
                      <table class="table table-hover">
-                        <tr>
-                           <td><strong>Carteira</strong></td>
-                           <td class=""><strong>R$ 1500,00</strong></td>
-                        </tr>
-                        <tr>
-                           <td><strong>Banco x</strong></td>
-                           <td class=""><strong>R$ 1500,00</strong></td>
-                        </tr>
-                        <tr>
-                           <td><strong>Outros</strong></td>
-                           <td class=""> <strong>R$ 1500,00</strong></td>
-                        </tr>
+                        {%for conta in accounts%}
+                              <tr>
+                                 <td><strong>{{conta.name}}</strong></td>
+                                 <td class=""><strong>R$ {{conta.total}}</strong></td>
+                              </tr>
+                              {%endfor%}
                      </table>
                   </div>
                </div>
@@ -169,6 +163,7 @@
                         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                            <p class="text-center">Balanço Total</p>
                            <table class="table table-hover">
+
                               <tr>
                                  <td><strong>teste2</strong></td>
                                  <td class=""><strong>R$ 1500,00</strong></td>
@@ -192,13 +187,7 @@
 
 
 
-<ul>
-<p>despesas por categorias</p>
-{% for key,value in despesa_por_categoria.items %}
-<li>categoria: {{key}} tem {{value}} de despesa</li>
-	
-{% endfor %}
-</ul>
+
 
 {%endblock%}
 
@@ -246,20 +235,36 @@
 
 
 
-         const labels = ['q','b','2'];
+         const labels = {{labels | safe}};
          const data = {
            labels: labels,
            datasets: [
              {
-               label: 'Receitas',
-               data: [1,2,3],
-               borderColor: "#198754",
+               label: 'Despesas',
+               
+               data: {{despesas_data | safe}},
+               borderColor: "#F7464A",
                yAxisID: 'y',
              },
              {
-               label: 'Despesas',
-               data:[2,1,4],
-               borderColor: "#F7464A",
+               
+               label: 'Receitas',
+               data:{{receitas_data | safe}},
+               borderColor: " #198754",
+               yAxisID: 'y1',
+             },
+             {
+               
+               label: 'Receitas Pend.',
+               data:{{receitas_pendentes_data | safe}},
+               borderColor: " #bbd164",
+               yAxisID: 'y1',
+             },
+             {
+               
+               label: 'Despesas Pend.',
+               data:{{receitas_pendentes_data | safe}},
+               borderColor: " #a85432",
                yAxisID: 'y1',
              }
            ]
@@ -278,7 +283,7 @@
              plugins: {
                title: {
                  display: true,
-                 text: 'Chart.js Line Chart - Multi Axis'
+                 text: 'Histórico de Receitas e Despesas'
                }
              },
              scales: {
@@ -305,11 +310,13 @@
 
 
          const data2 = {
-           labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
+           labels: {{labels_cat | safe}},
            datasets: [
              {
                label: 'Dataset 1',
-               data: [2,5,2,2,1],
+               data: {{data_cat | safe}},
+               backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
+          hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"],
                
              }
            ]

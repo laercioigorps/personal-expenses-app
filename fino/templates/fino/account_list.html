@@ -23,8 +23,8 @@ Accounts
                            <div class="col-10">
                               <h2>
                               	
-                              		{%if receitas%}
-                              			R$ {{receitas |floatformat:2}}
+                              		{%if saldo %}
+                              			R$ {{saldo |floatformat:2}}
                               		{%else %}
                               			R$ 00,00
                               		{%endif%}
@@ -104,8 +104,8 @@ Accounts
                      </table>
                   </div>
                   <div class="col-md-5">
-                     <h3 class="text-center" >Distribuição do Saldo</h3 >
-                     <canvas id="pieChart" style="max-width: 500px;"></canvas>
+                     <!-- <h3 class="text-center" >Distribuição do Saldo</h3 > -->
+                     <canvas id="pieChart"  style="max-height:250px;"></canvas>
                   </div>
                </div>
                <div class="row mt-2 ">
@@ -145,6 +145,62 @@ Accounts
     });
       </script>
       {%endblock%}
+
+    {% block scripts %}
+      {% load static %}
+      
+      <script src="{% static 'fino/js/collapzion.min.js' %}"></script>
+      <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script type="text/javascript">
+
+          
+
+
+
+           
+
+
+         const data2 = {
+           labels: {{cat_labels | safe}},
+           datasets: [
+             {
+               label: 'Dataset 1',
+               data: {{cat_data | safe}},
+               backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
+          hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"],
+               
+             }
+           ]
+         };
+         const config2 = {
+           type: 'pie',
+           data: data2,
+           options: {
+             responsive: true,
+             plugins: {
+               legend: {
+                 position: 'top',
+               },
+               title: {
+                 display: true,
+                 text: 'Distribuição de Saldo nas contas'
+               }
+             }
+           },
+         };
+
+
+
+         window.onload = function() {
+
+               
+
+               var ctx2 = document.getElementById('pieChart').getContext('2d');
+               window.myPie2 = new Chart(ctx2, config2);
+             };
+      </script>
+      {% endblock %}
 
 
 

@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+import datetime
 
 from .forms import AccountModelForm, CattegoryModelForm, TransactionModelForm, Account_delete_form,TransactionTypeModelForm
 from .models import Account, Cattegory, Transaction
@@ -53,22 +54,65 @@ def home_view(request):
 
 	transactions_despesas_all =transactions.filter(cattegory__is_receita = False)
 
-	dic = {}
-	context = {}
+	despesas_por_categoria = categorias_despesas.values('name').annotate(total = Sum('transaction__total'))
+	
 
-	for cattegory in categorias_despesas:
-		soma = cattegory.transaction_set.aggregate(Sum('total'))['total__sum']
-		if soma:
-			dic[cattegory.name] = soma
-	print (dic)	
+	labels_cat = []
+	data_cat = []
+	for cat in despesas_por_categoria:
+		labels_cat.append(cat['name'])
+		data_cat.append(str(cat['total']))
+
+	despesas_pendentes_historico = despesas_pendentes_transactions.values('date__month').annotate(totals=Sum('total'))
+	receitas_pendentes_historico = receitas_pendentes_transactions.values('date__month').annotate(totals=Sum('total'))
+
+
+	despesas_historico = despesas_transactions.values('date__month').annotate(totals=Sum('total'))
+	receitas_historico = receitas_transactions.values('date__month').annotate(totals=Sum('total'))
+	labels = ['janeiro','feb','março','abril','maio','junho','julho','agosto','setembri','outubgo','nov','dez']
+	despesas_data = {}
+	receitas_data = {}
+
+	despesas_pendentes_data = {}
+	receitas_pendentes_data={}
+	for i in range(1,13):
+		despesas_data[str(i)] = 'None'
+		receitas_data[str(i)] = 'None'
+		despesas_pendentes_data[str(i)] = 'None'
+		receitas_pendentes_data[str(i)] = 'None'
+
+	for despesa in despesas_historico:
+		despesas_data[str(despesa['date__month'])] = str(despesa['totals'] * -1)
+	for receita in receitas_historico:
+		receitas_data[str(receita['date__month'])] = str(receita['totals'])
+	for despesa in despesas_pendentes_historico:
+		despesas_pendentes_data[str(despesa['date__month'])] = str(despesa['totals'] * -1)
+	for receita in receitas_pendentes_historico:
+		receitas_pendentes_data[str(receita['date__month'])] = str(receita['totals'])
+
+	
+	current_month = datetime.date.today().month
+	
+	
 	context = {
 
 		'saldo' : accounts.aggregate(Sum('total'))['total__sum'],
-		'receitas' : receitas_transactions.aggregate(Sum('total'))['total__sum'],
-		'despesas' : transactions_despesas_all.aggregate(Sum('total'))['total__sum'],
-		'despesas_pendentes' : despesas_pendentes_transactions.aggregate(Sum('total'))['total__sum'],
-		'receitas_pendentes' : receitas_pendentes_transactions.aggregate(Sum('total'))['total__sum'],
-		'despesa_por_categoria' : dic,
+		'receitas' : receitas_data[str(current_month)],
+		'despesas' : despesas_data[str(current_month)],
+		'despesas_pendentes' : despesas_pendentes_data[str(current_month)],
+		'receitas_pendentes' : receitas_pendentes_data[str(current_month)],
+
+		'labels': labels,
+		'despesas_data': list(despesas_data.values()),
+		'receitas_data': list(receitas_data.values()),
+
+		'receitas_pendentes_data' : list(receitas_pendentes_data.values()),
+		'despesas_pendentes_data' : list(despesas_pendentes_data.values()),
+
+		'labels_cat' : labels_cat,
+		'data_cat': data_cat,
+
+		'accounts' : accounts,
 
 	}
 	return render(request, 'fino/home.html', context)
@@ -95,8 +139,19 @@ def create_account_view(request):
 def list_account_view(request):
 	#accounts = get_list_or_404(Account.objects.filter(user = request.user))
 	accounts = Account.objects.filter(user= request.user)
+
+	cat_labels = []
+	cat_data = []
+
+	for account in accounts:
+		cat_labels.append(account.name)
+		cat_data.append(str(account.total))
+	print(cat_data)
 	context = {
-		'list_objects' : accounts
+		'list_objects' : accounts,
+		'cat_labels' : cat_labels,
+		'cat_data': cat_data,
+		'saldo' : accounts.aggregate(Sum('total'))['total__sum']
 	}
 	return render(request,'fino/account_list.html', context)
 
@@ -171,11 +226,47 @@ def create_cattegory_view(request):
 
 @login_required
 def list_cattegory_view(request):
+
+	current_month = datetime.date.today().month
 	#accounts = get_list_or_404(Account.objects.filter(user = request.user))
 	cattegory = Cattegory.objects.filter(user= request.user)
 
+	cat_receitas_labels = []
+	cat_receitas_data = []
+
+	cat_despesas_labels = []
+	cat_despesas_data = []
+
+	cat_receitas = cattegory.filter(is_receita = True).values('name').annotate(total = Sum('transaction__total'))
+	cat_despesas = cattegory.filter(is_receita = False).values('name').annotate(total = Sum('transaction__total'))
+
+	
+	receitas = cat_receitas.aggregate(Sum('total'))['total__sum']
+	despesas= cat_despesas.aggregate(Sum('total'))['total__sum'] * -1
+	for cat in cat_receitas:
+		if not  cat['total']:
+			continue
+		cat_receitas_labels.append(cat['name'])
+		cat_receitas_data.append(str(cat['total']))
+
+	for cat in cat_despesas:
+		if not  cat['total']:
+			continue
+		cat_despesas_labels.append(cat['name'])
+		cat_despesas_data.append(str(cat['total']))
+
+	print(receitas)
+
 	context = {
-		'list_objects' : cattegory
+		'list_objects' : cattegory,
+		'cat_receitas_labels' : cat_receitas_labels,
+		'cat_receitas_data' : cat_receitas_data,
+
+		'cat_despesas_labels' : cat_despesas_labels,
+		'cat_despesas_data' : cat_despesas_data,
+
+		'receitas' : str(receitas),
+		'despesas' : str(despesas),
 	}
 	return render(request,'fino/cattegory_list.html', context)
 
