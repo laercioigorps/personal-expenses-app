@@ -6,7 +6,23 @@ Transações: {{month}} de 2021
 
 
 
-			
+			{%block button1%}
+            <a href="{% url 'fino:transaction_list_by_month_year' before_month year_to_before %}" type="button" class="btn btn-sm btn-outline-secondary">{{before_month_name}}</a>
+            {%endblock%}
+            {%block button2%}
+            <button type="button" class="btn btn-sm btn-outline-secondary">{{month}}</button>
+            {%endblock%}
+            {%block button3%}
+            <a href="{% url 'fino:transaction_list_by_month_year' next_month year_to_next %}" type="button" class="btn btn-sm btn-outline-secondary">{{next_month_name}}</a>
+            {%endblock%}
+          </div>
+          {%block button4%}
+            
+          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <span data-feather="calendar"></span>
+            Este mês
+          </button>
+            {%endblock%}
 
 {% block content %}
 
@@ -111,7 +127,7 @@ Transações: {{month}} de 2021
                <div class="row mt-2">
                	<div class="col-md-1"></div>
                		<div class="col-md-10">
-               			<table class="table table-hover" data-toggle="table" >
+               			<table class="table table-hover"  >
                      	<tr class="text-center">
                            <td><strong>Conta</strong></td>
                            <td class="" ><strong>Categoria</strong></td>

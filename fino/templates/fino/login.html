@@ -43,7 +43,7 @@
     
 <main class="form-signin">
 	{% load crispy_forms_tags %}
-  <form method="post" action="{% url 'fino:login' %}">
+  <form method="post" action="{% url 'fino:login_page' %}">
   	{{ form.non_field_errors }}
   	{% csrf_token %}
     <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">

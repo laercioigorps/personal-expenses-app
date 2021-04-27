@@ -6,14 +6,12 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.82.0">
-    <title>{% block title %}My amazing site{% endblock %}</title>
+    <title>{% block title %}Igoo fino{% endblock %}</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
 
 
-    <!-- test table -->
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
-
+    
     <script
   src="https://code.jquery.com/jquery-3.6.0.min.js"
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -64,14 +62,14 @@
   <body>
     
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Company name</a>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Igoo</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
-      <a class="nav-link" href="#">Sign out</a>
+      <a class="nav-link" href="/fino/logout/">Sign out</a>
     </li>
   </ul>
 </header>
@@ -89,21 +87,21 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if "/fino/account/" in request.path %}active{% endif %}" href="/fino/account/list">
+            <a class="nav-link {% if "/fino/conta" in request.path %}active{% endif %}" href="/fino/contas/">
               <span data-feather="file"></span>
-              Account
+              Contas
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if "/fino/cattegory/" in request.path %}active{% endif %} " href="/fino/cattegory/list">
+            <a class="nav-link {% if "/fino/categoria" in request.path %}active{% endif %} " href="/fino/categorias/">
               <span data-feather="shopping-cart"></span>
-              Cattegories
+              Categorias
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if "/fino/transaction/" in request.path %}active{% endif %}" href="/fino/transaction/list">
+            <a class="nav-link {% if "/fino/transa" in request.path %}active{% endif %}" href="/fino/transacoes/">
               <span data-feather="users"></span>
-              Transactions
+              Transações
             </a>
           </li>
           <li class="nav-item">
@@ -162,14 +160,23 @@
         <h1 class="h2">{% block h1 %}meu titulo{% endblock %}</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group me-2">
+            {%block button1%}
             <button type="button" class="btn btn-sm btn-outline-secondary">Receita</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Despesa</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">transferencia</button>
+            {%endblock%}
+            {%block button2%}
+            <button type="button" class="btn btn-sm btn-outline-secondary">Receita</button>
+            {%endblock%}
+            {%block button3%}
+            <button type="button" class="btn btn-sm btn-outline-secondary">Receita</button>
+            {%endblock%}
           </div>
+          {%block button4%}
+            
           <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
             <span data-feather="calendar"></span>
             This week
           </button>
+            {%endblock%}
         </div>
       </div>
 
