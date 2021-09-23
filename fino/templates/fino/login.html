@@ -67,7 +67,8 @@
     </div>
   
     <input type="hidden" name="next" value="{% url 'fino:home_page' %}">
-    <button class="w-100 btn btn-lg btn-primary" type="submit" value="login">Sign in</button>
+    <button class="w-100 btn btn-lg btn-primary" type="submit" value="login">Log in</button>
+    <p class="mt-5 mb-3 text-muted">Don't have an account? <a href={% url 'fino:signup' %}>create One</a></p>
     <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
   </form>
 </main>

@@ -1,17 +1,87 @@
-<h2>Sign up Form</h2>
-<form method="post">
-  {% csrf_token %}
-  {% for field in form %}
-    <p>
-      {{ field.label_tag }}<br>
-      {{ field }}
-      {% if field.help_text %}
-        <small style="color: grey">{{ field.help_text }}</small>
-      {% endif %}
-      {% for error in field.errors %}
-        <p style="color: red">{{ error }}</p>
-      {% endfor %}
-    </p>
-  {% endfor %}
-  <button type="submit">Sign up</button>
-</form>
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.82.0">
+    <title>Signin Template · Bootstrap v5.0</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
+
+    
+
+    <!-- Bootstrap core CSS -->
+    {% load static %}
+<link href="{% static 'fino/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="{% static 'fino/css/signin.css' %}" rel="stylesheet">
+  </head>
+  <body class="text-center">
+    
+<main class="form-signin">
+	{% load crispy_forms_tags %}
+  <form method="post" action="{% url 'fino:signup' %}">
+  	{{ form.non_field_errors }}
+  	{% csrf_token %}
+    <img class="mb-4" src="" alt="" width="72" height="57">
+    <h1 class="h3 mb-3 fw-normal">Please Log in</h1>
+
+    <div class="form-floating">
+      <input type="text" class="form-control" name='username' id="id_username" placeholder="name@example.com">
+      {{ form.username.errors }}
+      <label for="id_username">Email address</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" name='password1' id="id_password1" placeholder="Password">
+      {{ form.password.errors }}
+      <label for="id_password1">Password</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" name='password2' id="id_password2" placeholder="Password">
+      {{ form.password.errors }}
+      <label for="id_password2">Password</label>
+    </div>
+
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+  
+    <input type="hidden" name="next" value="{% url 'fino:home_page' %}">
+    <button class="w-100 btn btn-lg btn-primary" type="submit" value="login">Log in</button>
+    <p class="mt-5 mb-3 text-muted">have an account? <a href={% url 'fino:login_page' %}>create One</a></p>
+    <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+
+
+
+  </form>
+</main>
+
+
+    
+  </body>
+</html>
