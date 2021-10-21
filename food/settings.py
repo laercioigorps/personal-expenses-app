@@ -25,7 +25,7 @@ SECRET_KEY = '@ii-z$0=cf7#a9u%g_144^0=hx07ax9n-gzab2l3ie0%$m^3_r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['obscure-dusk-26889.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['giniapp.herokuapp.com','127.0.0.1']
 
 
 # Application definition
