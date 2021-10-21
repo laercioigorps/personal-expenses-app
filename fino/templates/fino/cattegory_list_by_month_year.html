@@ -1,23 +1,15 @@
-{% extends 'fino/base.html' %} {% block h1 %} Categorias {% endblock %} {% block
-content %}
+{% extends 'fino/base.html' %} {% block h1 %} Categorias {% endblock %}
+{% block content %}
 
 <div class="row align-items-md-stretch">
   <div class="col-md-6">
     <div class="p-3 bg-light text-success border rounded-3">
       <div class="row">
         <div class="col-2 align-right">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="40 "
-            height="40"
-            fill="currentColor"
-            class="bi bi-arrow-up-circle"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" width="40 " height="40" fill="currentColor"
+            class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
           </svg>
         </div>
         <div class="col-10">
@@ -35,18 +27,10 @@ content %}
     <div class="p-3 bg-light text-success border rounded-3">
       <div class="row">
         <div class="col-2 align-right">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="40"
-            height="40"
-            fill="currentColor"
-            class="bi bi-arrow-down-circle"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+            class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z" />
           </svg>
         </div>
         <div class="col-10">
@@ -143,8 +127,7 @@ content %}
 <script type="text/javascript">
   jQuery(function ($) {
     $("#btncollapzion").Collapzion({
-      _child_attribute: [
-        {
+      _child_attribute: [{
           label: "Nova Categoria de Receita",
           url: "{%url 'fino:cattegory_create'%}",
           icon: "&#xe8e5;",
@@ -165,21 +148,23 @@ content %}
 <script src="{% static 'fino/js/collapzion.min.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript">
-
-
-
-
   const data1 = {
-    labels: {{cat_receitas_labels | safe}},
-    datasets: [
+    labels: {
       {
-        label: 'Dataset 1',
-        data: {{cat_receitas_data | safe}},
-        backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
-   hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"],
-
+        cat_receitas_labels | safe
       }
-    ]
+    },
+    datasets: [{
+      label: 'Dataset 1',
+      data: {
+        {
+          cat_receitas_data | safe
+        }
+      },
+      backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
+      hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"],
+
+    }]
   };
   const config1 = {
     type: 'pie',
@@ -202,16 +187,22 @@ content %}
 
 
   const data2 = {
-    labels: {{cat_despesas_labels | safe}},
-    datasets: [
+    labels: {
       {
-        label: 'Dataset 2',
-        data: {{cat_despesas_data | safe}},
-        backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
-   hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"],
-
+        cat_despesas_labels | safe
       }
-    ]
+    },
+    datasets: [{
+      label: 'Dataset 2',
+      data: {
+        {
+          cat_despesas_data | safe
+        }
+      },
+      backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
+      hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"],
+
+    }]
   };
   const config2 = {
     type: 'pie',
@@ -235,14 +226,14 @@ content %}
 
 
 
-  window.onload = function() {
+  window.onload = function () {
 
-        var ctx = document.getElementById('pieChartReceitas').getContext('2d');
-        window.myPie = new Chart(ctx, config1);
+    var ctx = document.getElementById('pieChartReceitas').getContext('2d');
+    window.myPie = new Chart(ctx, config1);
 
-        var ctx2 = document.getElementById('pieChartDespesas').getContext('2d');
-        window.myPie2 = new Chart(ctx2, config2);
-      };
+    var ctx2 = document.getElementById('pieChartDespesas').getContext('2d');
+    window.myPie2 = new Chart(ctx2, config2);
+  };
 </script>
 
 {% endblock %} {%block style%} canvas{ margin: 0 auto; } {%endblock%}

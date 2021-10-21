@@ -13,11 +13,7 @@ block content %} {% load crispy_forms_tags %}
   {% load crispy_forms_tags %}
   <form method="post" action="#">
     {% csrf_token %} {{form | crispy}}
-    <button
-      class="w-100 btn btn-lg btn-primary mt-2"
-      type="submit"
-      value="login"
-    >
+    <button class="w-100 btn btn-lg btn-primary mt-2" type="submit" value="login">
       Enviar
     </button>
     <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>

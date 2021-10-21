@@ -1,6 +1,6 @@
 {% extends 'fino/base.html' %}
 {% block h1 %}
-		Dashboard
+Dashboard
 {% endblock %}
 
 {% block content %}
@@ -11,178 +11,190 @@
 
 
 <div class="row align-items-md-stretch">
-                  <div class="col-md-6">
-                     <div class=" p-3 text-white bg-success rounded-3 ">
-                        <div class="row">
-                           <div class="col-2 align-right">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="40 " height="40" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
-                                 <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
-                              </svg>
-                           </div>
-                           <div class="col-10">
-                              <h2>
-                              	
-                              		{%if receitas  and  receitas != 'None'%}
-                              			R$ {{receitas |floatformat:2}}
-                              		{%else %}
-                              			R$ 00,00
-                              		{%endif%}
-                              </h2>
-                              <p>Receitas esse mês</p>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-md-6">
-                     <div class=" p-3 bg-danger text-white border rounded-3 ">
-                        <div class="row">
-                           <div class="col-2 align-right">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
-                                 <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-                              </svg>
-                           </div>
-                           <div class="col-10">
-                              	<h2>
-                              		{%if despesas  and  despesas != 'None'%}
-                              			R$ {{despesas |floatformat:2}}
-                              		{%else %}
-                              			R$ 00,00
-                              		{%endif%}
-                          		</h2>
-                              <p>Despesas desse mês</p>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="row mt-1">
-                  <div class="col-md-6">
-                     <div class=" p-3 bg-light text-success border rounded-3">
-                        <div class="row">
-                           <div class="col-2 align-right">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="40 " height="40" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
-                                 <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
-                              </svg>
-                           </div>
-                           <div class="col-10">
-                              <h2>
-                              	{%if receitas_pendentes  and  receitas_pendentes != 'None'%}
-                              			R$ {{receitas_pendentes |floatformat:2}}
-                              		{%else %}
-                              			R$ 00,00
-                              		{%endif%}
-                              </h2>
-                              <p>Receitas Pendentes</p>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-md-6">
-                     <div class=" p-3 bg-light text-danger border rounded-3 ">
-                        <div class="row">
-                           <div class="col-2 align-right">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
-                                 <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-                              </svg>
-                           </div>
-                           <div class="col-10">
-                              <h2>{%if despesas_pendentes and  despesas_pendentes != 'None'%}
-                              			R$ {{despesas_pendentes |floatformat:2}}
-                              		{%else %}
-                              			R$ 00,00
-                              		{%endif%}</h2>
-                              <p>Despesas Pendentes</p>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="row mt-2 ">
-                  <div class="col-md-6 ">
-                    <canvas id="pie-chart"></canvas>
-                  </div>
-                  <div class="col-md-6 ">
-                     <!-- <h4 class="mt-4">Seu portifolio</h4 > -->
-                     <a class="text-success" href="">
-                     	<h2 class="text-center mt-5">
-                     		{%if saldo%}
-                              			R$ {{saldo |floatformat:2}}
-                              		{%else %}
-                              			R$ 00,00
-                              		{%endif%}</h2>
-                     	
-                     </h2></a>
-                     <p class="text-center">Balanço Total</p>
-                     <table class="table table-hover">
-                        {%for conta in accounts%}
-                              <tr>
-                                 <td><strong>{{conta.name}}</strong></td>
-                                 <td class=""><strong>R$ {{conta.total}}</strong></td>
-                              </tr>
-                              {%endfor%}
-                     </table>
-                  </div>
-               </div>
-               <div class="row mt-2 ">
-                  <div class="col-md-6">
-                     <h3 class="text-center" >Despesas por categoria</h3 >
-                     <canvas id="pieChart" style="max-height:250px;"></canvas>
-                  </div>
-                  <div class="col-md-6 ">
-                     <!-- sd -->
-                     <h3>Despesas cartão de crédito</h3>
-                     <ul class="nav nav-pills" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                           <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Fechada</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                           <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Aberta</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                           <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
-                        </li>
-                     </ul>
-                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                           <p class="text-center">Balanço Total</p>
-                           <table class="table table-hover">
-                              <tr>
-                                 <td><strong>Carteira</strong></td>
-                                 <td class=""><strong>R$ 1500,00</strong></td>
-                              </tr>
-                              <tr>
-                                 <td><strong>Banco x</strong></td>
-                                 <td class=""><strong>R$ 1500,00</strong></td>
-                              </tr>
-                              <tr>
-                                 <td><strong>Outros</strong></td>
-                                 <td class=""> <strong>R$ 1500,00</strong></td>
-                              </tr>
-                           </table>
-                        </div>
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                           <p class="text-center">Balanço Total</p>
-                           <table class="table table-hover">
+   <div class="col-md-6">
+      <div class=" p-3 text-white bg-success rounded-3 ">
+         <div class="row">
+            <div class="col-2 align-right">
+               <svg xmlns="http://www.w3.org/2000/svg" width="40 " height="40" fill="currentColor"
+                  class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                     d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
+               </svg>
+            </div>
+            <div class="col-10">
+               <h2>
 
-                              <tr>
-                                 <td><strong>teste2</strong></td>
-                                 <td class=""><strong>R$ 1500,00</strong></td>
-                              </tr>
-                              <tr>
-                                 <td><strong>Banco x</strong></td>
-                                 <td class=""><strong>R$ 1500,00</strong></td>
-                              </tr>
-                              <tr>
-                                 <td><strong>Outros</strong></td>
-                                 <td class=""> <strong>R$ 1500,00</strong></td>
-                              </tr>
-                           </table>
-                        </div>
-                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">patty</div>
-                     </div>
-                     <!-- sd -->
-                  </div>
-               </div>
+                  {%if receitas  and  receitas != 'None'%}
+                  R$ {{receitas |floatformat:2}}
+                  {%else %}
+                  R$ 00,00
+                  {%endif%}
+               </h2>
+               <p>Receitas esse mês</p>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-md-6">
+      <div class=" p-3 bg-danger text-white border rounded-3 ">
+         <div class="row">
+            <div class="col-2 align-right">
+               <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                  class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                     d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z" />
+               </svg>
+            </div>
+            <div class="col-10">
+               <h2>
+                  {%if despesas  and  despesas != 'None'%}
+                  R$ {{despesas |floatformat:2}}
+                  {%else %}
+                  R$ 00,00
+                  {%endif%}
+               </h2>
+               <p>Despesas desse mês</p>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="row mt-1">
+   <div class="col-md-6">
+      <div class=" p-3 bg-light text-success border rounded-3">
+         <div class="row">
+            <div class="col-2 align-right">
+               <svg xmlns="http://www.w3.org/2000/svg" width="40 " height="40" fill="currentColor"
+                  class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                     d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
+               </svg>
+            </div>
+            <div class="col-10">
+               <h2>
+                  {%if receitas_pendentes  and  receitas_pendentes != 'None'%}
+                  R$ {{receitas_pendentes |floatformat:2}}
+                  {%else %}
+                  R$ 00,00
+                  {%endif%}
+               </h2>
+               <p>Receitas Pendentes</p>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-md-6">
+      <div class=" p-3 bg-light text-danger border rounded-3 ">
+         <div class="row">
+            <div class="col-2 align-right">
+               <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                  class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                     d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z" />
+               </svg>
+            </div>
+            <div class="col-10">
+               <h2>{%if despesas_pendentes and  despesas_pendentes != 'None'%}
+                  R$ {{despesas_pendentes |floatformat:2}}
+                  {%else %}
+                  R$ 00,00
+                  {%endif%}</h2>
+               <p>Despesas Pendentes</p>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="row mt-2 ">
+   <div class="col-md-6 ">
+      <canvas id="pie-chart"></canvas>
+   </div>
+   <div class="col-md-6 ">
+      <!-- <h4 class="mt-4">Seu portifolio</h4 > -->
+      <a class="text-success" href="">
+         <h2 class="text-center mt-5">
+            {%if saldo%}
+            R$ {{saldo |floatformat:2}}
+            {%else %}
+            R$ 00,00
+            {%endif%}</h2>
+
+         </h2>
+      </a>
+      <p class="text-center">Balanço Total</p>
+      <table class="table table-hover">
+         {%for conta in accounts%}
+         <tr>
+            <td><strong>{{conta.name}}</strong></td>
+            <td class=""><strong>R$ {{conta.total}}</strong></td>
+         </tr>
+         {%endfor%}
+      </table>
+   </div>
+</div>
+<div class="row mt-2 ">
+   <div class="col-md-6">
+      <h3 class="text-center">Despesas por categoria</h3>
+      <canvas id="pieChart" style="max-height:250px;"></canvas>
+   </div>
+   <div class="col-md-6 ">
+      <!-- sd -->
+      <h3>Despesas cartão de crédito</h3>
+      <ul class="nav nav-pills" id="myTab" role="tablist">
+         <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+               role="tab" aria-controls="home" aria-selected="true">Fechada</button>
+         </li>
+         <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
+               role="tab" aria-controls="profile" aria-selected="false">Aberta</button>
+         </li>
+         <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
+               role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+         </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <p class="text-center">Balanço Total</p>
+            <table class="table table-hover">
+               <tr>
+                  <td><strong>Carteira</strong></td>
+                  <td class=""><strong>R$ 1500,00</strong></td>
+               </tr>
+               <tr>
+                  <td><strong>Banco x</strong></td>
+                  <td class=""><strong>R$ 1500,00</strong></td>
+               </tr>
+               <tr>
+                  <td><strong>Outros</strong></td>
+                  <td class=""> <strong>R$ 1500,00</strong></td>
+               </tr>
+            </table>
+         </div>
+         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <p class="text-center">Balanço Total</p>
+            <table class="table table-hover">
+
+               <tr>
+                  <td><strong>teste2</strong></td>
+                  <td class=""><strong>R$ 1500,00</strong></td>
+               </tr>
+               <tr>
+                  <td><strong>Banco x</strong></td>
+                  <td class=""><strong>R$ 1500,00</strong></td>
+               </tr>
+               <tr>
+                  <td><strong>Outros</strong></td>
+                  <td class=""> <strong>R$ 1500,00</strong></td>
+               </tr>
+            </table>
+         </div>
+         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">patty</div>
+      </div>
+      <!-- sd -->
+   </div>
+</div>
 
 
 
@@ -192,162 +204,181 @@
 {%endblock%}
 
 {%block fab%}
-        <script type="text/javascript">
-        jQuery(function($){
+<script type="text/javascript">
+   jQuery(function ($) {
       $('#btncollapzion').Collapzion({
-              _child_attribute:[
-                  {
-                    'label':'Nova Receita',
-                    'url':"{%url 'fino:transaction_by_type/create' 'receita'%}",
-                    'icon':'&#xe8e5;'
-                  },
-                  {
-                  'label':'Nova Despesa',
-                  'url':"{%url 'fino:transaction_by_type/create' 'despesa'%}",
-                  'icon':'&#Xe8e3;'
-                  },
-                  {
-                  'label':'Tranferencia',
-                  'url':'#',
-                  'icon':'&#xf232;'
-                  },
-                  {
-                  'label':'Despesa Cartão',
-                  'url':'#',
-                  'icon':'&#xe870;'
-                  },
-              ],
-              _main_btn_color:'#4285f4;',
-              _child_btn_color:'#f4645f;',
-        
-          });
-    });
-      </script>
-      {%endblock%}
-      {% block scripts %}
-      {% load static %}
-      <!-- <script src="{% static 'fino/js/dashboard.js' %}"></script> -->
-      <script src="{% static 'fino/js/collapzion.min.js' %}"></script>
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-      <script type="text/javascript">
+         _child_attribute: [{
+               'label': 'Nova Receita',
+               'url': "{%url 'fino:transaction_by_type/create' 'receita'%}",
+               'icon': '&#xe8e5;'
+            },
+            {
+               'label': 'Nova Despesa',
+               'url': "{%url 'fino:transaction_by_type/create' 'despesa'%}",
+               'icon': '&#Xe8e3;'
+            },
+            {
+               'label': 'Tranferencia',
+               'url': '#',
+               'icon': '&#xf232;'
+            },
+            {
+               'label': 'Despesa Cartão',
+               'url': '#',
+               'icon': '&#xe870;'
+            },
+         ],
+         _main_btn_color: '#4285f4;',
+         _child_btn_color: '#f4645f;',
 
-          
+      });
+   });
+</script>
+{%endblock%}
+{% block scripts %}
+{% load static %}
+<!-- <script src="{% static 'fino/js/dashboard.js' %}"></script> -->
+<script src="{% static 'fino/js/collapzion.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript">
+   const labels = {
+      {
+         labels | safe
+      }
+   };
+   const data = {
+      labels: labels,
+      datasets: [{
+            label: 'Despesas',
 
-
-
-         const labels = {{labels | safe}};
-         const data = {
-           labels: labels,
-           datasets: [
-             {
-               label: 'Despesas',
-               
-               data: {{despesas_data | safe}},
-               borderColor: "#F7464A",
-               yAxisID: 'y',
-             },
-             {
-               
-               label: 'Receitas',
-               data:{{receitas_data | safe}},
-               borderColor: " #198754",
-               yAxisID: 'y1',
-             },
-             {
-               
-               label: 'Receitas Pend.',
-               data:{{receitas_pendentes_data | safe}},
-               borderColor: " #bbd164",
-               yAxisID: 'y1',
-             },
-             {
-               
-               label: 'Despesas Pend.',
-               data:{{receitas_pendentes_data | safe}},
-               borderColor: " #a85432",
-               yAxisID: 'y1',
-             }
-           ]
-         };
-
-                      const config = {
-           type: 'line',
-           data: data,
-           options: {
-             responsive: true,
-             interaction: {
-               mode: 'index',
-               intersect: false,
-             },
-             stacked: false,
-             plugins: {
-               title: {
-                 display: true,
-                 text: 'Histórico de Receitas e Despesas'
+            data: {
+               {
+                  despesas_data | safe
                }
-             },
-             scales: {
-               y: {
-                 type: 'linear',
-                 display: true,
-                 position: 'left',
-               },
-               y1: {
-                 type: 'linear',
-                 display: true,
-                 position: 'right',
+            },
+            borderColor: "#F7464A",
+            yAxisID: 'y',
+         },
+         {
 
-                 // grid line settings
-                 grid: {
-                   drawOnChartArea: false, // only want the grid lines for one axis to show up
-                 },
-               },
-             }
-           },
-         };
-
-             
-
-
-         const data2 = {
-           labels: {{labels_cat | safe}},
-           datasets: [
-             {
-               label: 'Dataset 1',
-               data: {{data_cat | safe}},
-               backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
-          hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"],
-               
-             }
-           ]
-         };
-         const config2 = {
-           type: 'pie',
-           data: data2,
-           options: {
-             responsive: true,
-             plugins: {
-               legend: {
-                 position: 'top',
-               },
-               title: {
-                 display: true,
-                 text: 'Chart.js Pie Chart'
+            label: 'Receitas',
+            data: {
+               {
+                  receitas_data | safe
                }
-             }
-           },
-         };
+            },
+            borderColor: " #198754",
+            yAxisID: 'y1',
+         },
+         {
+
+            label: 'Receitas Pend.',
+            data: {
+               {
+                  receitas_pendentes_data | safe
+               }
+            },
+            borderColor: " #bbd164",
+            yAxisID: 'y1',
+         },
+         {
+
+            label: 'Despesas Pend.',
+            data: {
+               {
+                  receitas_pendentes_data | safe
+               }
+            },
+            borderColor: " #a85432",
+            yAxisID: 'y1',
+         }
+      ]
+   };
+
+   const config = {
+      type: 'line',
+      data: data,
+      options: {
+         responsive: true,
+         interaction: {
+            mode: 'index',
+            intersect: false,
+         },
+         stacked: false,
+         plugins: {
+            title: {
+               display: true,
+               text: 'Histórico de Receitas e Despesas'
+            }
+         },
+         scales: {
+            y: {
+               type: 'linear',
+               display: true,
+               position: 'left',
+            },
+            y1: {
+               type: 'linear',
+               display: true,
+               position: 'right',
+
+               // grid line settings
+               grid: {
+                  drawOnChartArea: false, // only want the grid lines for one axis to show up
+               },
+            },
+         }
+      },
+   };
 
 
 
-         window.onload = function() {
 
-               var ctx = document.getElementById('pie-chart').getContext('2d');
-               window.myPie = new Chart(ctx, config);
+   const data2 = {
+      labels: {
+         {
+            labels_cat | safe
+         }
+      },
+      datasets: [{
+         label: 'Dataset 1',
+         data: {
+            {
+               data_cat | safe
+            }
+         },
+         backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
+         hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"],
 
-               var ctx2 = document.getElementById('pieChart').getContext('2d');
-               window.myPie2 = new Chart(ctx2, config2);
-             };
-      </script>
-      
-      {% endblock %}
+      }]
+   };
+   const config2 = {
+      type: 'pie',
+      data: data2,
+      options: {
+         responsive: true,
+         plugins: {
+            legend: {
+               position: 'top',
+            },
+            title: {
+               display: true,
+               text: 'Chart.js Pie Chart'
+            }
+         }
+      },
+   };
+
+
+
+   window.onload = function () {
+
+      var ctx = document.getElementById('pie-chart').getContext('2d');
+      window.myPie = new Chart(ctx, config);
+
+      var ctx2 = document.getElementById('pieChart').getContext('2d');
+      window.myPie2 = new Chart(ctx2, config2);
+   };
+</script>
+
+{% endblock %}

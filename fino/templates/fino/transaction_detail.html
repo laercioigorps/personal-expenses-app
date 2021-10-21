@@ -12,12 +12,7 @@ endblock %} {% block content %}
           </h2>
           <p>Esse mês</p>
 
-          <a
-            class="btn btn-primary btn-lg"
-            type="button"
-            href="{% url 'fino:transaction_edit' object.id%}"
-            >Editar</a
-          >
+          <a class="btn btn-primary btn-lg" type="button" href="{% url 'fino:transaction_edit' object.id%}">Editar</a>
         </div>
       </div>
     </div>
@@ -40,22 +35,14 @@ endblock %} {% block content %}
     <div class="row text-center mt-1">
       <div class="col-md-6">
         <div class="p-1 bg-light border rounded-3">
-          <a
-            class="btn btn-primary btn-lg"
-            type="button"
-            href="{% url 'fino:cattegory_detail' object.cattegory.id%}"
-            >{{object.cattegory}}</a
-          >
+          <a class="btn btn-primary btn-lg" type="button"
+            href="{% url 'fino:cattegory_detail' object.cattegory.id%}">{{object.cattegory}}</a>
         </div>
       </div>
       <div class="col-md-6">
         <div class="p-1 bg-light border rounded-3">
-          <a
-            class="btn btn-primary btn-lg"
-            type="button"
-            href="{% url 'fino:account_detail' object.account.id%}"
-            >{{object.account}}</a
-          >
+          <a class="btn btn-primary btn-lg" type="button"
+            href="{% url 'fino:account_detail' object.account.id%}">{{object.account}}</a>
         </div>
       </div>
     </div>
