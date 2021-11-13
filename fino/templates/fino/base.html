@@ -79,26 +79,26 @@
             {% with request.resolver_match.url_name as url_name %}
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link {% if url_name == 'home_page' %}active{% endif %}" aria-current="page" href="/fino/">
+                <a class="nav-link {% if url_name == 'home_page' %}active{% endif %}" aria-current="page" href="/">
                   <span data-feather="home"></span>
                   Dashboard
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link {% if "/fino/conta" in request.path %}active{% endif %}" href="/fino/contas/">
+                <a class="nav-link {% if "/conta" in request.path %}active{% endif %}" href="/contas/">
                   <span data-feather="file"></span>
                   Contas
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link {% if "/fino/categoria" in request.path %}active{% endif %} "
-                  href="/fino/categorias/">
+                <a class="nav-link {% if "/categoria" in request.path %}active{% endif %} "
+                  href="/categorias/">
                   <span data-feather="shopping-cart"></span>
                   Categorias
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link {% if "/fino/transa" in request.path %}active{% endif %}" href="/fino/transacoes/">
+                <a class="nav-link {% if "/transa" in request.path %}active{% endif %}" href="/transacoes/">
                   <span data-feather="users"></span>
                   Transações
                 </a>
