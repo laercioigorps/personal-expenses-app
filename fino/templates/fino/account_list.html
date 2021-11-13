@@ -117,18 +117,10 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript">
   const data2 = {
-    labels: {
-      {
-        cat_labels | safe
-      }
-    },
+    labels: {{cat_labels | safe}},
     datasets: [{
       label: 'Dataset 1',
-      data: {
-        {
-          cat_data | safe
-        }
-      },
+      data: {{cat_data | safe}},
       backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
       hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"],
 
@@ -151,12 +143,7 @@
     },
   };
 
-
-
   window.onload = function () {
-
-
-
     var ctx2 = document.getElementById('pieChart').getContext('2d');
     window.myPie2 = new Chart(ctx2, config2);
   };

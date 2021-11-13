@@ -1,4 +1,6 @@
 {
     "python.linting.pylintEnabled": true,
-    
+    "[django-html]": {
+        "editor.formatOnSave": false,
+    }
 }

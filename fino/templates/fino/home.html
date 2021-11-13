@@ -2,14 +2,7 @@
 {% block h1 %}
 Dashboard
 {% endblock %}
-
 {% block content %}
-
-
-
-
-
-
 <div class="row align-items-md-stretch">
    <div class="col-md-6">
       <div class=" p-3 text-white bg-success rounded-3 ">
@@ -241,54 +234,33 @@ Dashboard
 <script src="{% static 'fino/js/collapzion.min.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript">
-   const labels = {
-      {
-         labels | safe
-      }
-   };
+   const labels = {{labels | safe}}; 
    const data = {
       labels: labels,
       datasets: [{
             label: 'Despesas',
 
-            data: {
-               {
-                  despesas_data | safe
-               }
-            },
+            data: {{despesas_data | safe}},
             borderColor: "#F7464A",
             yAxisID: 'y',
          },
          {
 
             label: 'Receitas',
-            data: {
-               {
-                  receitas_data | safe
-               }
-            },
+            data: {{receitas_data | safe}},
             borderColor: " #198754",
             yAxisID: 'y1',
          },
          {
 
             label: 'Receitas Pend.',
-            data: {
-               {
-                  receitas_pendentes_data | safe
-               }
-            },
+            data: {{receitas_pendentes_data | safe}},
             borderColor: " #bbd164",
             yAxisID: 'y1',
          },
          {
-
             label: 'Despesas Pend.',
-            data: {
-               {
-                  receitas_pendentes_data | safe
-               }
-            },
+            data: {{receitas_pendentes_data | safe}},
             borderColor: " #a85432",
             yAxisID: 'y1',
          }
@@ -335,18 +307,10 @@ Dashboard
 
 
    const data2 = {
-      labels: {
-         {
-            labels_cat | safe
-         }
-      },
+      labels: {{labels_cat | safe}},
       datasets: [{
          label: 'Dataset 1',
-         data: {
-            {
-               data_cat | safe
-            }
-         },
+         data: {{data_cat | safe}},
          backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
          hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"],
 

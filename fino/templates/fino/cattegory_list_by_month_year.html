@@ -1,4 +1,5 @@
-{% extends 'fino/base.html' %} {% block h1 %} Categorias {% endblock %}
+{% extends 'fino/base.html' %}
+{% block h1 %} Categorias {% endblock %}
 {% block content %}
 
 <div class="row align-items-md-stretch">
@@ -14,7 +15,10 @@
         </div>
         <div class="col-10">
           <h2>
-            {%if receitas%} R$ {{receitas |floatformat:2}} {%else %} R$ 00,00
+            {%if receitas%}
+            R$ {{receitas |floatformat:2}}
+            {%else %}
+            R$ 00,00
             {%endif%}
           </h2>
           <p>Receitas Totais</p>
@@ -35,7 +39,9 @@
         </div>
         <div class="col-10">
           <h2>
-            {%if despesas%} R$ {{despesas |floatformat:2}} {%else %} R$ 00,00
+            {%if despesas%}
+            R$ {{despesas |floatformat:2}}
+            {%else %} R$ 00,00
             {%endif%}
           </h2>
           <p>Despesas Totais</p>
@@ -149,18 +155,10 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript">
   const data1 = {
-    labels: {
-      {
-        cat_receitas_labels | safe
-      }
-    },
+    labels: {{cat_receitas_labels | safe}},
     datasets: [{
       label: 'Dataset 1',
-      data: {
-        {
-          cat_receitas_data | safe
-        }
-      },
+      data: {{cat_receitas_data | safe}},
       backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
       hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"],
 
@@ -178,8 +176,6 @@
         title: {
           display: true,
           text: 'Receitas',
-
-
         }
       }
     },
@@ -187,18 +183,10 @@
 
 
   const data2 = {
-    labels: {
-      {
-        cat_despesas_labels | safe
-      }
-    },
+    labels: {{cat_despesas_labels | safe}},
     datasets: [{
       label: 'Dataset 2',
-      data: {
-        {
-          cat_despesas_data | safe
-        }
-      },
+      data: {{cat_despesas_data | safe}},
       backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
       hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"],
 
@@ -236,4 +224,5 @@
   };
 </script>
 
-{% endblock %} {%block style%} canvas{ margin: 0 auto; } {%endblock%}
+{% endblock %} 
+{%block style%} canvas{ margin: 0 auto; } {%endblock%}

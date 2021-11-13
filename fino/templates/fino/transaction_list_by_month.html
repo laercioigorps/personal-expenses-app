@@ -3,225 +3,214 @@
 {% block h1 %}
 Transações: {{month}} de 2021
 {% endblock %}
-
-
-
-			{%block button1%}
-            <a href="{% url 'fino:transaction_list_by_month_year' before_month year_to_before %}" type="button" class="btn btn-sm btn-outline-secondary">{{before_month_name}}</a>
-            {%endblock%}
-            {%block button2%}
-            <button type="button" class="btn btn-sm btn-outline-secondary">{{month}}</button>
-            {%endblock%}
-            {%block button3%}
-            <a href="{% url 'fino:transaction_list_by_month_year' next_month year_to_next %}" type="button" class="btn btn-sm btn-outline-secondary">{{next_month_name}}</a>
-            {%endblock%}
-          </div>
-          {%block button4%}
-            
-          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            Este mês
-          </button>
-            {%endblock%}
+{%block button1%}
+   <a href="{% url 'fino:transaction_list_by_month_year' before_month year_to_before %}" type="button"
+      class="btn btn-sm btn-outline-secondary">{{before_month_name}}</a>
+{%endblock%}
+{%block button2%}
+   <button type="button" class="btn btn-sm btn-outline-secondary">{{month}}</button>
+{%endblock%}
+{%block button3%}
+   <a href="{% url 'fino:transaction_list_by_month_year' next_month year_to_next %}" type="button"
+      class="btn btn-sm btn-outline-secondary">{{next_month_name}}</a>
+{%endblock%}
+</div>
+{%block button4%}
+   <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+      <span data-feather="calendar"></span>
+      Este mês
+   </button>
+{%endblock%}
 
 {% block content %}
-
-
-
-
-
-
 <div class="row align-items-md-stretch">
-                  <div class="col-md-3">
-                     <div class=" p-3 bg-light text-success border rounded-3">
-                        <div class="row">
-                           <div class="col-2 align-right">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="40 " height="40" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
-                                 <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
-                              </svg>
-                           </div>
-                           <div class="col-10">
-                              <h2>
-                              	
-                              		{%if receitas%}
-                              			R$ {{receitas |floatformat:2}}
-                              		{%else %}
-                              			R$ 00,00
-                              		{%endif%}
-                              </h2>
-                              <p>Receitas</p>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+   <div class="col-md-3">
+      <div class=" p-3 bg-light text-success border rounded-3">
+         <div class="row">
+            <div class="col-2 align-right">
+               <svg xmlns="http://www.w3.org/2000/svg" width="40 " height="40" fill="currentColor"
+                  class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                     d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
+               </svg>
+            </div>
+            <div class="col-10">
+               <h2>
 
-                  <div class="col-md-3">
-                     <div class=" p-3 bg-light text-danger border rounded-3">
-                        <div class="row">
-                           <div class="col-2 align-right">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
-                                 <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-                              </svg>
-                           </div>
-                           <div class="col-10">
-                              	<h2>
-                              		{%if despesas%}
-                              			R$ {{despesas |floatformat:2}}
-                              		{%else %}
-                              			R$ 00,00
-                              		{%endif%}
-                          		</h2>
-                              <p>Despesas</p>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+                  {%if receitas%}
+                  R$ {{receitas |floatformat:2}}
+                  {%else %}
+                  R$ 00,00
+                  {%endif%}
+               </h2>
+               <p>Receitas</p>
+            </div>
+         </div>
+      </div>
+   </div>
 
-                  <div class="col-md-3">
-                     <div class=" p-3 bg-light text-secondary border rounded-3">
-                        <div class="row">
-                           <div class="col-2 align-right">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="40 " height="40" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
-                                 <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
-                              </svg>
-                           </div>
-                           <div class="col-10">
-                              	<h2>
-                              		{%if receitas_pendentes%}
-                              			R$ {{receitas_pendentes |floatformat:2}}
-                              		{%else %}
-                              			R$ 00,00
-                              		{%endif%}
-                          		</h2>
-                              <p>Receitas Pendentes</p>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+   <div class="col-md-3">
+      <div class=" p-3 bg-light text-danger border rounded-3">
+         <div class="row">
+            <div class="col-2 align-right">
+               <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                  class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                     d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z" />
+               </svg>
+            </div>
+            <div class="col-10">
+               <h2>
+                  {%if despesas%}
+                  R$ {{despesas |floatformat:2}}
+                  {%else %}
+                  R$ 00,00
+                  {%endif%}
+               </h2>
+               <p>Despesas</p>
+            </div>
+         </div>
+      </div>
+   </div>
 
-
-                  <div class="col-md-3">
-                     <div class=" p-3 bg-light text-secondary border rounded-3">
-                        <div class="row">
-                           <div class="col-2 align-right">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
-                                 <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-                              </svg>
-                           </div>
-                           <div class="col-10">
-                              	<h2>
-                              		{%if despesas_pendentes%}
-                              			R$ {{despesas_pendentes |floatformat:2}}
-                              		{%else %}
-                              			R$ 00,00
-                              		{%endif%}
-                          		</h2>
-                              <p>despesas Pendentes</p>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  
-               </div>
-               
-               <div class="row mt-2">
-               	<div class="col-md-1"></div>
-               		<div class="col-md-10">
-               			<table class="table table-hover"  >
-                     	<tr class="text-center">
-                           <td><strong>Conta</strong></td>
-                           <td class="" ><strong>Categoria</strong></td>
-                           <td class="" ><strong>Descricao</strong></td>
-                           <td class="" ><strong>Total</strong></td>
-                           <td class=""><strong>Efetivada</strong></td>
-                           <td class=""><strong>Data</strong></td>
-                 
-                        </tr>
-                        {% if list_objects%}
-                        {%for object in list_objects%}
-                        <tr class="{%if object.cattegory.is_receita == True%} text-success {%else%} text-danger{%endif%}">
-                           <td><a href="{%url 'fino:transaction_detail' object.id%}"><strong>{{object.account}}</strong></a></td>
-                           <td class="">{{object.cattegory}}</td>
-                           <td class="">{{object.description}}</td>
-                           <td class="" >R$ {{object.total}}</td>
-                           <td class="">{{object.is_completed}}</td>
-                           <td class="">{{object.date}}</td>
-                           
-
-                        </tr>
-                        {%endfor%}
-                        {%else%}
-
-                        <tr>
-                           <td><a href="#"><strong>----------</strong></a></td>
-                           <td class="">----------</td>
-                           <td class="">----------</td>
-                           <td class="">----------</td>
-                           <td class="">----------</td>
-                           <td class="">----------</td>
-                           <td class="">----------</td>
-
-                        </tr>
+   <div class="col-md-3">
+      <div class=" p-3 bg-light text-secondary border rounded-3">
+         <div class="row">
+            <div class="col-2 align-right">
+               <svg xmlns="http://www.w3.org/2000/svg" width="40 " height="40" fill="currentColor"
+                  class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                     d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
+               </svg>
+            </div>
+            <div class="col-10">
+               <h2>
+                  {%if receitas_pendentes%}
+                  R$ {{receitas_pendentes |floatformat:2}}
+                  {%else %}
+                  R$ 00,00
+                  {%endif%}
+               </h2>
+               <p>Receitas Pendentes</p>
+            </div>
+         </div>
+      </div>
+   </div>
 
 
-                        {%endif%}
-                        
-                     </table>
+   <div class="col-md-3">
+      <div class=" p-3 bg-light text-secondary border rounded-3">
+         <div class="row">
+            <div class="col-2 align-right">
+               <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                  class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                     d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z" />
+               </svg>
+            </div>
+            <div class="col-10">
+               <h2>
+                  {%if despesas_pendentes%}
+                  R$ {{despesas_pendentes |floatformat:2}}
+                  {%else %}
+                  R$ 00,00
+                  {%endif%}
+               </h2>
+               <p>despesas Pendentes</p>
+            </div>
+         </div>
+      </div>
+   </div>
 
-               		</div>
+</div>
 
-               </div>
-               <div class="row mt-2 ">
-                  <div class="col-md-12 ">
-                     <canvas class="my-4 w-100" id="myChart" height="250" ></canvas>
-                  </div>
-                  
-               </div>
-               
+<div class="row mt-2">
+   <div class="col-md-1"></div>
+   <div class="col-md-10">
+      <table class="table table-hover">
+         <tr class="text-center">
+            <td><strong>Conta</strong></td>
+            <td class=""><strong>Categoria</strong></td>
+            <td class=""><strong>Descricao</strong></td>
+            <td class=""><strong>Total</strong></td>
+            <td class=""><strong>Efetivada</strong></td>
+            <td class=""><strong>Data</strong></td>
+
+         </tr>
+         {% if list_objects%}
+         {%for object in list_objects%}
+         <tr class="{%if object.cattegory.is_receita == True%} text-success {%else%} text-danger{%endif%}">
+            <td><a href="{%url 'fino:transaction_detail' object.id%}"><strong>{{object.account}}</strong></a></td>
+            <td class="">{{object.cattegory}}</td>
+            <td class="">{{object.description}}</td>
+            <td class="">R$ {{object.total}}</td>
+            <td class="">{{object.is_completed}}</td>
+            <td class="">{{object.date}}</td>
 
 
+         </tr>
+         {%endfor%}
+         {%else%}
+
+         <tr>
+            <td><a href="#"><strong>----------</strong></a></td>
+            <td class="">----------</td>
+            <td class="">----------</td>
+            <td class="">----------</td>
+            <td class="">----------</td>
+            <td class="">----------</td>
+            <td class="">----------</td>
+
+         </tr>
 
 
+         {%endif%}
+
+      </table>
+
+   </div>
+
+</div>
+<div class="row mt-2 ">
+   <div class="col-md-12 ">
+      <canvas class="my-4 w-100" id="myChart" height="250"></canvas>
+   </div>
+
+</div>
 {%endblock%}
 
 
 {%block fab%}
-        <script type="text/javascript">
-        jQuery(function($){
+<script type="text/javascript">
+   jQuery(function ($) {
       $('#btncollapzion').Collapzion({
-              _child_attribute:[
-                  {
-                    'label':'Nova Receita',
-                    'url':"{%url 'fino:transaction_by_type/create' 'receita'%}",
-                    'icon':'&#xe8e5;'
-                  },
-                  {
-                  'label':'Nova Despesa',
-                  'url':"{%url 'fino:transaction_by_type/create' 'despesa'%}",
-                  'icon':'&#Xe8e3;'
-                  },
-              ],
-              _main_btn_color:'#4285f4;',
-              _child_btn_color:'#f4645f;',
-        
-          });
-    });
+         _child_attribute: [{
+               'label': 'Nova Receita',
+               'url': "{%url 'fino:transaction_by_type/create' 'receita'%}",
+               'icon': '&#xe8e5;'
+            },
+            {
+               'label': 'Nova Despesa',
+               'url': "{%url 'fino:transaction_by_type/create' 'despesa'%}",
+               'icon': '&#Xe8e3;'
+            },
+         ],
+         _main_btn_color: '#4285f4;',
+         _child_btn_color: '#f4645f;',
 
+      });
+   });
+   //       $('.table > tbody > tr').click(function() {
+   //   		window.location = "url";
+   // });
+</script>
+{%endblock%}
 
+{% block scripts %}
+{% load static %}
+<!-- <script src="{% static 'fino/js/dashboard.js' %}"></script> -->
+<script src="{% static 'fino/js/collapzion.min.js' %}"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 
-  //       $('.table > tbody > tr').click(function() {
-  //   		window.location = "url";
-		// });
-      </script>
-      {%endblock%}
-
-      {% block scripts %}
-      {% load static %}
-      <!-- <script src="{% static 'fino/js/dashboard.js' %}"></script> -->
-      <script src="{% static 'fino/js/collapzion.min.js' %}"></script>
-      <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
-
-      <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-      {% endblock %}
-
-
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+{% endblock %}
