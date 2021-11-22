@@ -16,12 +16,12 @@ from .models import Account, Cattegory, Transaction
 # views for account -----------------------------------------------------------------
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def wizard_view(request):
     return HttpResponseRedirect(reverse('fino:home_page'))
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('fino:login_page'))
@@ -50,7 +50,7 @@ def signup_view(request):
     return render(request, 'fino/signup.html', {'form': form})
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def home_view(request):
 
     current_month = datetime.date.today().month
@@ -145,7 +145,7 @@ def home_view(request):
     return render(request, 'fino/home.html', context)
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def create_account_view(request):
     if request.method == 'POST':
         form = AccountModelForm(request.POST)
@@ -163,7 +163,7 @@ def create_account_view(request):
         return render(request, 'fino/account_create.html', {'form': form, 'us': request.user})
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def list_account_view(request):
     #accounts = get_list_or_404(Account.objects.filter(user = request.user))
     accounts = Account.objects.filter(user=request.user)
@@ -211,7 +211,7 @@ def list_account_view(request):
     return render(request, 'fino/account_list.html', context)
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def detail_account_view(request, id):
     account = get_object_or_404(Account, id=id)
     if account.user == request.user:
@@ -227,7 +227,7 @@ def detail_account_view(request, id):
     return render(request, 'fino/account_detail.html', context)
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def edit_account_view(request, id):
 
     account = get_object_or_404(Account, id=id)
@@ -245,7 +245,7 @@ def edit_account_view(request, id):
         return render(request, 'fino/account_create.html', {'form': form, 'us': request.user})
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def delete_account_view(request, id):
     account = get_object_or_404(Account, id=id)
     if not account.user == request.user:
@@ -267,7 +267,7 @@ def delete_account_view(request, id):
 # views for cattegory -----------------------------------------------------------------
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def create_cattegory_view(request):
     if request.method == 'POST':
 
@@ -283,7 +283,7 @@ def create_cattegory_view(request):
         return render(request, 'fino/cattegory_create.html', {'form': form, 'us': request.user})
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def list_cattegory_view(request):
 
     current_month = datetime.date.today().month
@@ -331,7 +331,7 @@ def list_cattegory_view(request):
     return render(request, 'fino/cattegory_list.html', context)
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def list_cattegory_by_month_year_view(request, month, year):
 
     #accounts = get_list_or_404(Account.objects.filter(user = request.user))
@@ -397,7 +397,7 @@ def list_cattegory_by_month_year_view(request, month, year):
     return render(request, 'fino/cattegory_list_by_month_year.html', context)
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def categorias_view(request):
     #accounts = get_list_or_404(Account.objects.filter(user = request.user))
     current_month = datetime.date.today().month
@@ -411,7 +411,7 @@ def categorias_view(request):
     return render(request, 'fino/transaction_list.html', context)
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def detail_cattegory_view(request, id):
 
     cattegory = get_object_or_404(Cattegory, id=id)
@@ -430,7 +430,7 @@ def detail_cattegory_view(request, id):
 
 
 # ok
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def edit_cattegory_view(request, id):
     cattegory = get_object_or_404(Cattegory, id=id)
     if not cattegory.user == request.user:
@@ -450,7 +450,7 @@ def edit_cattegory_view(request, id):
         return render(request, 'fino/cattegory_create.html', {'form': form, 'us': request.user})
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def delete_cattegory_view(request, id):
 
     cattegory = get_object_or_404(Cattegory, id=id)
@@ -472,7 +472,7 @@ def delete_cattegory_view(request, id):
 
 # views for transaction -----------------------------------------------------------------
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def create_transaction_view(request):
 
     if request.method == 'POST':
@@ -495,7 +495,7 @@ def create_transaction_view(request):
         return render(request, 'fino/transaction_create.html', {'form': form})
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def create_transaction_by_type_view(request, types):
 
     if request.method == 'POST':
@@ -518,7 +518,7 @@ def create_transaction_by_type_view(request, types):
         return render(request, 'fino/transaction_create.html', {'form': form})
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def list_transaction_view(request):
     #accounts = get_list_or_404(Account.objects.filter(user = request.user))
     transaction = Transaction.objects.filter(
@@ -529,7 +529,7 @@ def list_transaction_view(request):
     return render(request, 'fino/transaction_list.html', context)
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def transacoes_view(request):
     #accounts = get_list_or_404(Account.objects.filter(user = request.user))
     month = datetime.date.today().month
@@ -543,7 +543,7 @@ def transacoes_view(request):
     return render(request, 'fino/transaction_list.html', context)
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def list_transaction_view_by_month(request, month, year):
     #accounts = get_list_or_404(Account.objects.filter(user = request.user))
 
@@ -624,7 +624,7 @@ def list_transaction_view_by_month(request, month, year):
     return render(request, 'fino/transaction_list_by_month.html', context)
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def list_transaction_by_account_view(request, cat):
     #accounts = get_list_or_404(Account.objects.filter(user = request.user))
     transaction = Transaction.objects.filter(cattegory=CattegoryModelForm)
@@ -635,12 +635,12 @@ def list_transaction_by_account_view(request, cat):
     return render(request, 'fino/transaction_list.html', context)
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def list_receitas_by_month(request, month, year):
     return HttpResponse('')
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def detail_transaction_view(request, id):
 
     transaction = get_object_or_404(Transaction, id=id)
@@ -659,7 +659,7 @@ def detail_transaction_view(request, id):
 
 
 # ok
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def edit_transaction_view(request, id):
     transaction = get_object_or_404(Transaction, id=id)
 
@@ -682,7 +682,7 @@ def edit_transaction_view(request, id):
         return render(request, 'fino/transaction_create.html', {'form': form, 'us': request.user})
 
 
-@login_required(login_url='/fino/login/')
+@login_required(login_url='/login/')
 def delete_transaction_view(request, id):
 
     transaction = get_object_or_404(Transaction, id=id)
