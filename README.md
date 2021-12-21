@@ -18,3 +18,11 @@ The app is composed of 4 main pages.
 
 ### Transactions
 ![This is an image](https://laerciosouza.vercel.app/images/portfolio/fino/transacoescomp.png)
+
+## The development
+The app was built in **Python** with extensive testing, and using tools like:
+  - Django framework
+  - ChartJS
+  - Bootstrap
+  - UnitTest
+  
