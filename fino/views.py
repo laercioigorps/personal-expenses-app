@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponseForbidden
@@ -194,6 +195,8 @@ def list_account_view(request):
     cat_data = []
 
     saldo = accounts.aggregate(Sum('total'))['total__sum']
+    if(not saldo):
+        saldo = 0
 
     valor_pendente = pendentes.aggregate(Sum('total'))['total__sum']
     if not valor_pendente:
@@ -201,13 +204,13 @@ def list_account_view(request):
     for account in accounts:
         cat_labels.append(account.name)
         cat_data.append(str(account.total))
-        context = {
-            'list_objects': accounts,
-            'cat_labels': cat_labels,
-            'cat_data': cat_data,
-            'saldo': saldo,
-            'previsto': saldo + valor_pendente
-        }
+    context = {
+        'list_objects': accounts,
+        'cat_labels': cat_labels,
+        'cat_data': cat_data,
+        'saldo': saldo,
+        'previsto': saldo + valor_pendente
+    }
     return render(request, 'fino/account_list.html', context)
 
 
@@ -285,11 +288,10 @@ def create_cattegory_view(request):
 
 @login_required(login_url='/login/')
 def list_cattegory_view(request):
-
     current_month = datetime.date.today().month
+    print(current_month)
     #accounts = get_list_or_404(Account.objects.filter(user = request.user))
     cattegory = Cattegory.objects.filter(user=request.user)
-
     cat_receitas_labels = []
     cat_receitas_data = []
 
@@ -302,7 +304,9 @@ def list_cattegory_view(request):
         'name').annotate(total=Sum('transaction__total'))
 
     receitas = cat_receitas.aggregate(Sum('total'))['total__sum']
-    despesas = cat_despesas.aggregate(Sum('total'))['total__sum'] * -1
+    despesas = cat_despesas.aggregate(Sum('total'))['total__sum']
+    if (despesas):
+        despesas = despesas * -1
     for cat in cat_receitas:
         if not cat['total']:
             continue
@@ -314,8 +318,6 @@ def list_cattegory_view(request):
             continue
         cat_despesas_labels.append(cat['name'])
         cat_despesas_data.append(str(cat['total']))
-
-    print(receitas)
 
     context = {
         'list_objects': cattegory,
