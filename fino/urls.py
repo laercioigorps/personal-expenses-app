@@ -42,7 +42,7 @@ urlpatterns = [
     path('categoria/<int:id>/deletar',
          views.delete_cattegory_view, name='cattegory_delete'),
     path('categorias/all', views.list_cattegory_view, name='cattegory_list'),
-    path('categorias/', views.categorias_view, name='cattegory_list'),
+    path('categorias/', views.categorias_view, name='cattegory_list_by_date'),
     path('categorias/<int:month>/<int:year>',
          views.list_cattegory_by_month_year_view, name='cattegory_list_by_month_year'),
 
