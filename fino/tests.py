@@ -464,7 +464,7 @@ class Cattegory_views_test_new_user(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(
             response.wsgi_request.user.cattegory_set.all().count(), 1)
-
+        print("heeeere")
         response = self.client.get(reverse('fino:cattegory_list'))
         self.assertEqual(response.context['list_objects'].count(), 1)
 
@@ -880,11 +880,10 @@ class HomePageTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         self.assertEqual(response.context['saldo'], 0)
-        self.assertEqual(response.context['receitas'], None)
-        self.assertEqual(response.context['despesas'], None)
-        self.assertEqual(response.context['despesas_pendentes'], None)
-        self.assertEqual(response.context['receitas_pendentes'], None)
-        self.assertEqual(response.context['despesa_por_categoria'], {})
+        self.assertEqual(response.context['receitas'], 'None')
+        self.assertEqual(response.context['despesas'], 'None')
+        self.assertEqual(response.context['despesas_pendentes'], 'None')
+        self.assertEqual(response.context['receitas_pendentes'], 'None')
 
     def test_get_home_page_add_data(self):
 
@@ -927,11 +926,10 @@ class HomePageTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         self.assertEqual(response.context['saldo'], total_before + 100)
-        self.assertEqual(response.context['receitas'], 100)
-        self.assertEqual(response.context['despesas'], None)
-        self.assertEqual(response.context['despesas_pendentes'], None)
-        self.assertEqual(response.context['receitas_pendentes'], None)
-        self.assertEqual(response.context['despesa_por_categoria'], {})
+        self.assertEqual(response.context['receitas'], '100')
+        self.assertEqual(response.context['despesas'], 'None')
+        self.assertEqual(response.context['despesas_pendentes'], 'None')
+        self.assertEqual(response.context['receitas_pendentes'], 'None')
 
         total_before = response.context['saldo']
 
@@ -951,20 +949,17 @@ class HomePageTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         self.assertEqual(response.context['saldo'], 70)
-        self.assertEqual(response.context['receitas'], 100)
-        self.assertEqual(response.context['despesas'], -30)
-        self.assertEqual(response.context['despesas_pendentes'], None)
-        self.assertEqual(response.context['receitas_pendentes'], None)
-        self.assertEqual(
-            response.context['despesa_por_categoria'], {'Roupa': -30})
-
+        self.assertEqual(response.context['receitas'], str(100))
+        self.assertEqual(response.context['despesas'], str(30))
+        self.assertEqual(response.context['despesas_pendentes'], 'None')
+        self.assertEqual(response.context['receitas_pendentes'], 'None')
         total_before = response.context['saldo']
 
         t_data = {
             'account': accounts.filter(name__startswith='Carteira').get().id,
             'cattegory': cattegories_despesas.filter(name__startswith='Moradia').get().id,
             'description': 'description of account1 and cattegory 1',
-            'total': 10.5,
+            'total': 10,
             'is_completed': False,
             'date': date.today(),
         }
@@ -975,14 +970,11 @@ class HomePageTest(TestCase):
         response = self.client.get(reverse('fino:home_page'))
         self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(response.context['saldo'], 70)
-        self.assertEqual(response.context['receitas'], 100)
-        self.assertEqual(response.context['despesas'], -40.5)
-        self.assertEqual(response.context['despesas_pendentes'], -10.5)
-        self.assertEqual(response.context['receitas_pendentes'], None)
-        self.assertEqual(
-            response.context['despesa_por_categoria'], {'Roupa': -30})
-
+        self.assertEqual(response.context['saldo'], total_before)
+        self.assertEqual(response.context['receitas'], str(100))
+        self.assertEqual(response.context['despesas'], str(30))
+        self.assertEqual(response.context['despesas_pendentes'], '10')
+        self.assertEqual(response.context['receitas_pendentes'], 'None')
         total_before = response.context['saldo']
 
         t_data = {
@@ -1000,14 +992,12 @@ class HomePageTest(TestCase):
         response = self.client.get(reverse('fino:home_page'))
         self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(response.context['saldo'], 70)
-        self.assertEqual(response.context['receitas'], 100)
-        self.assertEqual(response.context['despesas'], -40.5)
-        self.assertEqual(response.context['despesas_pendentes'], -10.5)
+        self.assertEqual(response.context['saldo'], Decimal(total_before))
+        self.assertEqual(response.context['receitas'], '100')
+        self.assertEqual(response.context['despesas'], str(30))
+        self.assertEqual(response.context['despesas_pendentes'], str(10))
         self.assertEqual(
-            response.context['receitas_pendentes'], Decimal('150.10'))
-        self.assertEqual(
-            response.context['despesa_por_categoria'], {'Roupa': -30})
+            Decimal(response.context['receitas_pendentes']), Decimal('150.10'))
 
 
 # faltam--------
