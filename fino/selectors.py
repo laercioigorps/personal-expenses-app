@@ -82,8 +82,7 @@ class AccountSelector:
         for receita in transactions_hist:
             transactions_data[str(receita['date__month'])
                               ] = str(receita['totals'])
-
-        return transactions_data
+        return transactions_data.values()
 
 
 class CategoryReporter:
