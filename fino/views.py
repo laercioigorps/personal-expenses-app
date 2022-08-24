@@ -9,6 +9,8 @@ from django.contrib.auth.forms import UserCreationForm
 import datetime
 from django.db.models import Q
 
+from .selectors import AccountSelector, CategoryReporter
+
 from .forms import AccountModelForm, CattegoryModelForm, TransactionModelForm, Account_delete_form, TransactionTypeModelForm
 from .models import Account, Cattegory, Transaction
 
@@ -53,97 +55,41 @@ def signup_view(request):
 
 @login_required(login_url='/login/')
 def home_view(request):
+    context = getHomePageViewContext(request)
+    return render(request, 'fino/home.html', context)
 
-    current_month = datetime.date.today().month
-    current_year = datetime.date.today().year
+
+def getHomePageViewContext(request):
+    acountSelector = AccountSelector()
 
     accounts = request.user.account_set.all()
+    
+    cattegoryReporter = CategoryReporter()
+    cattegoryReport = cattegoryReporter.getCurrentMonthCattegoryExpensesReport(request.user)
 
-    # will filter transactions of the month later
-    transactions = Transaction.objects.filter(account__user=request.user)
-    completed_transactions = transactions.filter(is_completed=True)
-    incompleted_transactions = transactions.filter(is_completed=False)
-
-    receitas_transactions = completed_transactions.filter(
-        cattegory__is_receita=True)
-    despesas_transactions = completed_transactions.filter(
-        cattegory__is_receita=False)
-
-    despesas_pendentes_transactions = incompleted_transactions.filter(
-        cattegory__is_receita=False)
-    receitas_pendentes_transactions = incompleted_transactions.filter(
-        cattegory__is_receita=True)
-
-    categorias_despesas = request.user.cattegory_set.filter(is_receita=False).filter(
-        transaction__is_completed=True)
-
-    despesas_cat = Transaction.objects.filter(cattegory__user=request.user).filter(
-        cattegory__is_receita=False).filter(
-        date__month=current_month).filter(date__year=current_year).values('cattegory__name').annotate(
-        totals=Sum('total'))
-
-    labels_cat = []
-    data_cat = []
-    for cat in despesas_cat:
-        labels_cat.append(cat['cattegory__name'])
-        data_cat.append(str(cat['totals']))
-
-    despesas_pendentes_historico = despesas_pendentes_transactions.values(
-        'date__month').annotate(totals=Sum('total'))
-    receitas_pendentes_historico = receitas_pendentes_transactions.values(
-        'date__month').annotate(totals=Sum('total'))
-
-    despesas_historico = despesas_transactions.values(
-        'date__month').annotate(totals=Sum('total'))
-    receitas_historico = receitas_transactions.values(
-        'date__month').annotate(totals=Sum('total'))
     labels = ['janeiro', 'feb', 'março', 'abril', 'maio', 'junho',
               'julho', 'agosto', 'setembri', 'outubgo', 'nov', 'dez']
-    despesas_data = {}
-    receitas_data = {}
+    return ({
 
-    despesas_pendentes_data = {}
-    receitas_pendentes_data = {}
-    for i in range(1, 13):
-        despesas_data[str(i)] = 'None'
-        receitas_data[str(i)] = 'None'
-        despesas_pendentes_data[str(i)] = 'None'
-        receitas_pendentes_data[str(i)] = 'None'
-
-    for despesa in despesas_historico:
-        despesas_data[str(despesa['date__month'])] = str(
-            despesa['totals'] * -1)
-    for receita in receitas_historico:
-        receitas_data[str(receita['date__month'])] = str(receita['totals'])
-    for despesa in despesas_pendentes_historico:
-        despesas_pendentes_data[str(despesa['date__month'])] = str(
-            despesa['totals'] * -1)
-    for receita in receitas_pendentes_historico:
-        receitas_pendentes_data[str(receita['date__month'])] = str(
-            receita['totals'])
-
-    context = {
-
-        'saldo': accounts.aggregate(Sum('total'))['total__sum'],
-        'receitas': receitas_data[str(current_month)],
-        'despesas': despesas_data[str(current_month)],
-        'despesas_pendentes': despesas_pendentes_data[str(current_month)],
-        'receitas_pendentes': receitas_pendentes_data[str(current_month)],
+        'saldo': acountSelector.getTotal(request.user),
+        'receitas': acountSelector.getCurrentMonthIncome(request.user),
+        'despesas': acountSelector.getCurrentMonthExpenses(request.user),
+        'despesas_pendentes': acountSelector.getCurrentMonthPendingExpenses(request.user),
+        'receitas_pendentes': acountSelector.getCurrentMonthPendingIncome(request.user),
 
         'labels': labels,
-        'despesas_data': list(despesas_data.values()),
-        'receitas_data': list(receitas_data.values()),
+        'despesas_data': list(acountSelector.getCompletedExpenses(request.user)),
+        'receitas_data': list(acountSelector.getCompletedIncomes(request.user)),
 
-        'receitas_pendentes_data': list(receitas_pendentes_data.values()),
-        'despesas_pendentes_data': list(despesas_pendentes_data.values()),
+        'receitas_pendentes_data': list(acountSelector.getPendingIncomes(request.user)),
+        'despesas_pendentes_data': list(acountSelector.getPendingExpenses(request.user)),
 
-        'labels_cat': labels_cat,
-        'data_cat': data_cat,
+        'labels_cat': cattegoryReport['labels'],
+        'data_cat': cattegoryReport['data'],
 
         'accounts': accounts,
 
-    }
-    return render(request, 'fino/home.html', context)
+    })
 
 
 @login_required(login_url='/login/')
@@ -195,7 +141,7 @@ def list_account_view(request):
     cat_data = []
 
     saldo = accounts.aggregate(Sum('total'))['total__sum']
-    if(not saldo):
+    if (not saldo):
         saldo = 0
 
     valor_pendente = pendentes.aggregate(Sum('total'))['total__sum']
@@ -599,9 +545,9 @@ def list_transaction_view_by_month(request, month, year):
     despesas_pendentes_data = despesas_pendentes.aggregate(total=Sum('total'))[
         'total']
 
-    if(despesas_data):
+    if (despesas_data):
         despesas_data = despesas_data * -1
-    if(despesas_pendentes_data):
+    if (despesas_pendentes_data):
         despesas_pendentes_data = despesas_pendentes_data * -1
 
     context = {
