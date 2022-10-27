@@ -1,4 +1,6 @@
 from datetime import timedelta
+import datetime
+from time import timezone
 from django.db.models import Sum
 from .models import Transaction
 
@@ -35,3 +37,11 @@ class DateUtils:
         date.replace(day=15)
         date = date + timedelta(days=30)
         return date
+
+    @staticmethod
+    def isValidDate(year=2022, month=1, day=15):
+        try:
+            date = datetime.date(year=year, month=month, day=day)
+        except ValueError:
+            return False
+        return True
