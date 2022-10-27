@@ -167,12 +167,10 @@ def list_account_view(request):
 def detail_account_view(request, id):
     account = get_object_or_404(Account, id=id)
     if account.user == request.user:
-        print("user == user")
         context = {
             'object': account
         }
     else:
-        print("user not user")
         context = {
             'object': None
         }
@@ -238,7 +236,6 @@ def create_cattegory_view(request):
 @login_required(login_url='/login/')
 def list_cattegory_view(request):
     current_month = datetime.date.today().month
-    print(current_month)
     #accounts = get_list_or_404(Account.objects.filter(user = request.user))
     cattegory = Cattegory.objects.filter(user=request.user)
     cat_receitas_labels = []
@@ -368,12 +365,10 @@ def detail_cattegory_view(request, id):
     cattegory = get_object_or_404(Cattegory, id=id)
 
     if cattegory.user == request.user:
-        print("user == user")
         context = {
             'object': cattegory
         }
     else:
-        print("user not user")
         context = {
             'object': None
         }
@@ -438,8 +433,6 @@ def create_transaction_view(request):
             transaction.account.save()
             return HttpResponseRedirect(reverse('fino:transaction_list'))
         else:
-            print('-----------invalido------')
-            print(request)
             return render(request, 'fino/transaction_create.html', {'form': form})
     else:
         form = TransactionModelForm(request.user)
@@ -461,8 +454,6 @@ def create_transaction_by_type_view(request, types):
             transaction.account.save()
             return HttpResponseRedirect(reverse('fino:transaction_list'))
         else:
-            print('-----------invalido------')
-            print(request)
             return render(request, 'fino/transaction_create.html', {'form': form})
     else:
         form = TransactionTypeModelForm(request.user, types)
@@ -570,12 +561,10 @@ def detail_transaction_view(request, id):
     transaction = get_object_or_404(Transaction, id=id)
 
     if transaction.account in request.user.account_set.all():
-        print("user == user")
         context = {
             'object': transaction
         }
     else:
-        print("user not user")
         context = {
             'object': None
         }
