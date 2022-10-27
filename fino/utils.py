@@ -29,3 +29,9 @@ class DateUtils:
         date.replace(day=15)
         date = date - timedelta(days=30)
         return date
+
+    @staticmethod
+    def get_next_month_date(date):
+        date.replace(day=15)
+        date = date + timedelta(days=30)
+        return date
