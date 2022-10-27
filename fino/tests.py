@@ -5,6 +5,8 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils import timezone
 
+from fino.utils import DateUtils
+
 
 from .models import Cattegory, Account, Transaction
 from .forms import AccountModelForm, Account_delete_form
@@ -1004,3 +1006,9 @@ class HomePageTest(TestCase):
 # não permitir edição de formulario
 # não permitir reenvio de erro de formilario invalido
 # detail view tests
+
+
+class DateUtilTest(TestCase):
+    def test_has_date_months(self):
+        self.assertEqual(DateUtils.MONTHS['1'], "Janeiro")
+        self.assertEqual(DateUtils.MONTHS['12'], "Dezembro")
