@@ -1012,3 +1012,9 @@ class DateUtilTest(TestCase):
     def test_has_date_months(self):
         self.assertEqual(DateUtils.MONTHS['1'], "Janeiro")
         self.assertEqual(DateUtils.MONTHS['12'], "Dezembro")
+
+    def test_get_previous_month(self):
+        today = datetime.date(year=2022, month=2, day=1)
+        previous_month_date = DateUtils.get_previous_month_date(today)
+        self.assertEqual(previous_month_date.month, 1)
+        self.assertEqual(previous_month_date.year, 2022)
