@@ -9,6 +9,8 @@ from django.contrib.auth.forms import UserCreationForm
 import datetime
 from django.db.models import Q
 
+from fino.utils import DateUtils
+
 from .selectors import AccountSelector, CategoryReporter
 
 from .forms import AccountModelForm, CattegoryModelForm, TransactionModelForm, Account_delete_form, TransactionTypeModelForm
@@ -17,7 +19,6 @@ from .models import Account, Cattegory, Transaction
 # Create your views here.
 
 # views for account -----------------------------------------------------------------
-
 
 @login_required(login_url='/login/')
 def wizard_view(request):
@@ -495,20 +496,6 @@ def transacoes_view(request):
 def list_transaction_view_by_month(request, month, year):
     #accounts = get_list_or_404(Account.objects.filter(user = request.user))
 
-    months = {}
-    months['1'] = 'Janeiro'
-    months['2'] = 'Fevereiro'
-    months['3'] = 'Março'
-    months['4'] = 'Abril'
-    months['5'] = 'Maio'
-    months['6'] = 'Junho'
-    months['7'] = 'Julho'
-    months['8'] = 'Agosto'
-    months['9'] = 'Setembro'
-    months['10'] = 'Outubro'
-    months['11'] = 'Novembro'
-    months['12'] = 'Dezembro'
-
     next_month = 0
     before_month = 0
     year_to_next = year
@@ -558,15 +545,15 @@ def list_transaction_view_by_month(request, month, year):
         'receitas_pendentes': receitas_pendentes_data,
         'despesas_pendentes': despesas_pendentes_data,
 
-        'months': months,
+        'months': list(DateUtils.MONTHS.values()),
         'year': year,
         'year_to_next': year_to_next,
         'year_to_before': year_to_before,
-        'month': months[str(month)],
+        'month': DateUtils.MONTHS[str(month)],
         'next_month': next_month,
-        'next_month_name': months[str(next_month)],
+        'next_month_name': DateUtils.MONTHS[str(next_month)],
         'before_month': before_month,
-        'before_month_name': months[str(before_month)],
+        'before_month_name': DateUtils.MONTHS[str(before_month)],
 
     }
     return render(request, 'fino/transaction_list_by_month.html', context)
