@@ -1039,6 +1039,14 @@ class DateUtilTest(TestCase):
         self.assertEqual(previous_month_date.month, 3)
         self.assertEqual(previous_month_date.year, 2022)
 
+    def test_get_next_month_without_parameter(self):
+        today = datetime.date.today()
+        previous_month_date = DateUtils.get_next_month_date(today)
+
+        previous_month_date2 = DateUtils.get_next_month_date()
+        self.assertEqual(previous_month_date.month, previous_month_date2.month)
+        self.assertEqual(previous_month_date.year, previous_month_date2.year)
+
     def test_is_valid_date_with_valid_date(self):
         isValidDate = DateUtils.isValidDate(year=2022, month=5, day=15)
         self.assertTrue(isValidDate)
