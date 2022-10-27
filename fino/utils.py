@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.db.models import Sum
 from .models import Transaction
 
@@ -7,6 +8,7 @@ def get_transactions_filter():
 
 
 class DateUtils:
+
     MONTHS = {
         '1': "Janeiro",
         '2': "Fevereiro",
@@ -21,3 +23,9 @@ class DateUtils:
         '11': "Novembro",
         '12': "Dezembro",
     }
+
+    @staticmethod
+    def get_previous_month_date(date):
+        date.replace(day=15)
+        date = date - timedelta(days=30)
+        return date
