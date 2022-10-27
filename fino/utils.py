@@ -35,7 +35,9 @@ class DateUtils:
         return date
 
     @staticmethod
-    def get_next_month_date(date):
+    def get_next_month_date(date=None):
+        if not date:
+            date = datetime.date.today()
         date.replace(day=15)
         date = date + timedelta(days=30)
         return date
