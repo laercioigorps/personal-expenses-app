@@ -20,6 +20,7 @@ from .models import Account, Cattegory, Transaction
 
 # views for account -----------------------------------------------------------------
 
+
 @login_required(login_url='/login/')
 def wizard_view(request):
     return HttpResponseRedirect(reverse('fino:home_page'))
@@ -64,9 +65,10 @@ def getHomePageViewContext(request):
     acountSelector = AccountSelector()
 
     accounts = request.user.account_set.all()
-    
+
     cattegoryReporter = CategoryReporter()
-    cattegoryReport = cattegoryReporter.getCurrentMonthCattegoryExpensesReport(request.user)
+    cattegoryReport = cattegoryReporter.getCurrentMonthCattegoryExpensesReport(
+        request.user)
 
     labels = ['janeiro', 'feb', 'março', 'abril', 'maio', 'junho',
               'julho', 'agosto', 'setembri', 'outubgo', 'nov', 'dez']
@@ -496,25 +498,12 @@ def transacoes_view(request):
 def list_transaction_view_by_month(request, month, year):
     #accounts = get_list_or_404(Account.objects.filter(user = request.user))
 
-    next_month = 0
-    before_month = 0
-    year_to_next = year
-    year_to_before = year
-
-    if month < 1 or month > 12:
+    if (not DateUtils.isValidDate(month=month, year=year)):
         raise Http404('mês invalido')
 
-    if month == 1:
-        before_month = 12
-        year_to_before = year - 1
-    else:
-        before_month = month - 1
-
-    if month == 12:
-        next_month = 1
-        year_to_next = year + 1
-    else:
-        next_month = month + 1
+    this_date = datetime.date(year=year, month=month, day=15)
+    next_month_date = DateUtils.get_next_month_date(this_date)
+    previous_month_date = DateUtils.get_previous_month_date(this_date)
 
     transaction = Transaction.objects.filter(account__user=request.user).filter(
         date__year=year).filter(date__month=month).order_by('-date')
@@ -547,13 +536,13 @@ def list_transaction_view_by_month(request, month, year):
 
         'months': list(DateUtils.MONTHS.values()),
         'year': year,
-        'year_to_next': year_to_next,
-        'year_to_before': year_to_before,
+        'year_to_next': next_month_date.year,
+        'year_to_before': previous_month_date.year,
         'month': DateUtils.MONTHS[str(month)],
-        'next_month': next_month,
-        'next_month_name': DateUtils.MONTHS[str(next_month)],
-        'before_month': before_month,
-        'before_month_name': DateUtils.MONTHS[str(before_month)],
+        'next_month': next_month_date.month,
+        'next_month_name': DateUtils.MONTHS[str(next_month_date.month)],
+        'before_month': previous_month_date.month,
+        'before_month_name': DateUtils.MONTHS[str(previous_month_date.month)],
 
     }
     return render(request, 'fino/transaction_list_by_month.html', context)
